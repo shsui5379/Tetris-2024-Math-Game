@@ -1,6 +1,6 @@
 //Type Alias for Tile class
 type Shape = "square";
-type Color = "#000000" | "F44336" | "2196F3" | "4CAF50" | "FF9800" | "795548";
+type Color = "#000000" | "#F44336" | "#2196F3" | "#4CAF50" | "#FF9800" | "#795548";
 type TileNumber = number | "";
 
 class Tile{
