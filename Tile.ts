@@ -34,7 +34,7 @@ class Tile {
     //Primary Method
     //Displays Tile object's properties to the HTML Document
     public display(): void {
-        this.#element.style.color = this.#color;
+        this.#element.style.backgroundColor = this.#color;
         this.#element.classList.add(this.#shape);
         this.#element.innerHTML = this.#number.toString();
     }
