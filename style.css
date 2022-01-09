@@ -2,12 +2,27 @@
    position: absolute;
 }
 
+.tile {
+   display: inline-block;
+   width: 12%;
+   height: 12%;
+   vertical-align: top;
+   text-align: center;
+   /* border: 1px solid white; */
+   align-items: center;
+   color: white;
+}
+
 @media (orientation: landscape) {
    .grid {
       width: 80vh;
       height: 80vh;
       top: 10vw;
       left: calc((100vw - 80vh) / 2);
+   }
+
+   .tile {
+      font: 4.5em Arial;
    }
 }
 
@@ -17,16 +32,8 @@
       height: 100vw;
       top: calc((100vh - 100vw) / 2);
    }
-}
 
-.tile {
-   display: inline-block;
-   width: 12%;
-   height: 12%;
-   vertical-align: top;
-   text-align: center;
-   border: 1px solid white;
-   align-items: center;
-   color: white;
-   font: 4.5em Arial;
+   .tile {
+      font: 2.5em Arial;
+   }
 }
