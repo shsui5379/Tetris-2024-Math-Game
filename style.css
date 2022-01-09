@@ -23,6 +23,7 @@
 
    .tile {
       font: 4.5em Arial;
+      line-height: 100%;
    }
 }
 
@@ -35,5 +36,6 @@
 
    .tile {
       font: 2.5em Arial;
+      line-height: 100%;
    }
 }
