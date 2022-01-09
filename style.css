@@ -1,9 +1,22 @@
 .grid {
-   width: 80vh;
-   height: 80vh;
    position: absolute;
-   top: 10vw;
-   left: calc((100vw - 80vh) / 2);
+}
+
+@media (orientation: landscape) {
+   .grid {
+      width: 80vh;
+      height: 80vh;
+      top: 10vw;
+      left: calc((100vw - 80vh) / 2);
+   }
+}
+
+@media (orientation: portrait) {
+   .grid {
+      width: 100vw;
+      height: 100vw;
+      top: calc((100vh - 100vw) / 2);
+   }
 }
 
 .tile {
@@ -15,5 +28,5 @@
    border: 1px solid white;
    align-items: center;
    color: white;
-   font: 400 4.5em Arial;
+   font: 4.5em Arial;
 }
