@@ -77,3 +77,10 @@ button:active {
    bottom: 1%;
    right: 1%
 }
+
+.scoreboard {
+   position: absolute;
+   left: 1%;
+   bottom: 15%;
+   font-size: 1.5em;
+}
