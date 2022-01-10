@@ -17,6 +17,10 @@ class Tile {
     //The HTMLDivElement that represents the Tile object
     #element: HTMLDivElement;
 
+    static readonly possibleColors: Color[] = ["#F44336", "#2196F3", "#4CAF50", "#FF9800", "#795548"];
+
+    static readonly possibleShapes: Shape[] = ["square"];
+
     //Constructor
     //Receives the Grid object to be appended with a Tile object in its default state
     constructor(parentGridElement: HTMLDivElement) {
@@ -34,6 +38,10 @@ class Tile {
     //Primary Method
     //Displays Tile object's properties to the HTML Document
     public display(): void {
+        for (let shape of Tile.possibleShapes) {
+            this.#element.classList.remove(shape);
+        }
+
         this.#element.style.backgroundColor = this.#color;
         this.#element.classList.add(this.#shape);
         this.#element.innerHTML = this.#number.toString();
