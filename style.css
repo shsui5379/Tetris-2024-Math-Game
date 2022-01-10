@@ -39,3 +39,9 @@
       line-height: 100%;
    }
 }
+
+.message-board {
+   height: 10vh;
+   text-align: center;
+   font: 3em Arial;
+}
