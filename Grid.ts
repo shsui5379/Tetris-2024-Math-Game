@@ -8,11 +8,15 @@ class Grid{
     //2D Tile array representing the Grid object
     #grid: Tile[][];
 
+    //Test
+    #coolDown: number;
+
     //Constructs a 2D grid object and initializes it on call
     constructor(row: number, column: number, element: HTMLDivElement){
         this.#numRow = row;
         this.#numCol = column;
         this.#grid = [[]];
+        this.#coolDown = 3;
         this.makeGrid(this.#numRow, this.#numCol, element);
 
         console.log(this.#grid);
@@ -90,6 +94,7 @@ class Grid{
                 console.log("testing drop interval with row: " + currRow);
                 if ((!this.moveTileDown(currRow, currCol))){
                     console.log("interval is cleared");
+                    setTimeout(() => this.dropRandomNumber(), 3000);
                     clearInterval(dropInterval);
                 }
                 else{
@@ -117,5 +122,10 @@ class Grid{
             });
         });
     }
+   }
+    /*
+        When the game begins, drop a tile and when it touches the floor,
+        let the cooldown begin. After the cooldown, keep dropping tile.
+    */
 }
 
