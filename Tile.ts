@@ -5,6 +5,9 @@ type TileNumber = number | "";
 
 class Tile{
 //Properties
+    //A list of available colors to pick from (excluding the default color #000000)
+    static #availableColors: string[] = ["#F44336", "#2196F3", "#4CAF50", "#FF9800", "#795548"];
+
     //The numerical value that a Tile object displays
     #number: TileNumber;
 
@@ -25,6 +28,7 @@ class Tile{
         this.#color = "#000000";
         this.#shape = "square";
 
+        this.#element.classList.add("tile");
         this.display();
         parentGridElement.appendChild(this.#element);
     }
@@ -32,8 +36,8 @@ class Tile{
 //Primary Method
     //Displays Tile object's properties to the HTML Document
     public display(): void{
-        this.#element.style.color = this.#color;
-        this.#element.classList.add("square");
+        this.#element.style.backgroundColor = this.#color;
+        this.#element.classList.add(this.#shape);
         this.#element.innerHTML= this.#number.toString();
     }
 
@@ -71,7 +75,8 @@ class Tile{
         other.setShape(thisTileShape);
         other.setNumber(thisTileNumber);
     }
-    //Getter Methods
+
+//Getter Methods
     public getNumber(): TileNumber{
         return this.#number;
     }
@@ -84,7 +89,15 @@ class Tile{
         return this.#shape;
     }
 
-    //Setter Methods
+    public getDivElement(): HTMLDivElement{
+        return this.#element;
+    }
+
+    public static getAvailableColors(): string[]{
+        return this.#availableColors;
+    } 
+
+//Setter Methods
     public setNumber(newNumber: TileNumber): void{
         this.#number = newNumber;
     }
