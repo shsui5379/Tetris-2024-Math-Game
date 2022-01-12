@@ -10,9 +10,16 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _Grid_numRow, _Grid_numCol, _Grid_grid;
+var _Grid_numRow, _Grid_numCol, _Grid_grid, _Grid_coolDown;
 class Grid {
-    //Constructs a 2D grid object and initializes it on call
+    /**
+     * Constructs a Grid with the given dimensions, and render it on the display
+     * @constructor
+     *
+     * @param {number} row  The number of rows for this Grid
+     * @param {number} column  The number of columns for this Grid
+     * @param {HTMLDivElement} element  The HTML div element to render this Grid on
+     */
     constructor(row, column, element) {
         //Number of rows in a Grid object
         _Grid_numRow.set(this, void 0);
@@ -20,34 +27,35 @@ class Grid {
         _Grid_numCol.set(this, void 0);
         //2D Tile array representing the Grid object
         _Grid_grid.set(this, void 0);
+        //Test
+        _Grid_coolDown.set(this, void 0);
         __classPrivateFieldSet(this, _Grid_numRow, row, "f");
         __classPrivateFieldSet(this, _Grid_numCol, column, "f");
-        __classPrivateFieldSet(this, _Grid_grid, [[]], "f");
+        __classPrivateFieldSet(this, _Grid_grid, [], "f");
+        __classPrivateFieldSet(this, _Grid_coolDown, 3, "f");
         this.makeGrid(__classPrivateFieldGet(this, _Grid_numRow, "f"), __classPrivateFieldGet(this, _Grid_numCol, "f"), element);
         console.log(__classPrivateFieldGet(this, _Grid_grid, "f"));
     }
     //Initializes the 2D Grid object by creating (row * col) Tile objects
     makeGrid(row, col, element) {
-        var grid = __classPrivateFieldGet(this, _Grid_grid, "f");
         for (let r = 0; r < row; r++) {
-            grid[r] = new Array(col);
+            let rowOfTiles = [];
             for (let c = 0; c < col; c++) {
-                grid[r][c] = new Tile(element);
+                rowOfTiles.push(new Tile(element));
             }
+            __classPrivateFieldGet(this, _Grid_grid, "f").push(rowOfTiles);
+            element.appendChild(document.createElement("br"));
         }
     }
-    //Refreshes and updates each Tile object 
+    /**
+     * Updates the display to reflect the current state of its Tiles
+     */
     display() {
-        var grid = __classPrivateFieldGet(this, _Grid_grid, "f");
-        grid.forEach(function (row) {
-            row.forEach(function (tile) {
+        for (let row of __classPrivateFieldGet(this, _Grid_grid, "f")) {
+            for (let tile of row) {
                 tile.display();
-            });
-        });
-    }
-    //Receives user inputs in the form of arrow keys to move Tiles
-    moveTiles(condition) {
-        //Uses methods from the merge condition
+            }
+        }
     }
     //Checks if the current Tile can be moved down
     moveTileDown(tileRow, tileCol) {
@@ -71,6 +79,9 @@ class Grid {
     mergeTileRight(tileRow, tileCol) {
         return false;
     }
+    mergeTilesDown(condition) { return 0; }
+    mergeTilesLeft(condition) { return 0; }
+    mergeTilesRight(condition) { return 0; }
     dropRandomNumber() {
         var grid = __classPrivateFieldGet(this, _Grid_grid, "f");
         var randomColumn = Math.floor((Math.random() * __classPrivateFieldGet(this, _Grid_numCol, "f"))); //Generates a number in interval [0,this.#numCol-1]
@@ -92,6 +103,7 @@ class Grid {
                 console.log("testing drop interval with row: " + currRow);
                 if ((!this.moveTileDown(currRow, currCol))) {
                     console.log("interval is cleared");
+                    setTimeout(() => this.dropRandomNumber(), 3000);
                     clearInterval(dropInterval);
                 }
                 else {
@@ -115,7 +127,12 @@ class Grid {
                 tile.empty();
             });
         });
+        this.display();
     }
 }
-_Grid_numRow = new WeakMap(), _Grid_numCol = new WeakMap(), _Grid_grid = new WeakMap();
+_Grid_numRow = new WeakMap(), _Grid_numCol = new WeakMap(), _Grid_grid = new WeakMap(), _Grid_coolDown = new WeakMap();
+/*
+When the game begins, drop a tile and when it touches the floor,
+let the cooldown begin. After the cooldown, keep dropping tile.
+*/
 //# sourceMappingURL=Grid.js.map

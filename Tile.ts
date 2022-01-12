@@ -3,8 +3,8 @@ type Shape = "square";
 type Color = "#000000" | "#F44336" | "#2196F3" | "#4CAF50" | "#FF9800" | "#795548";
 type TileNumber = number | "";
 
-class Tile{
-//Properties
+class Tile {
+    //Properties
     //A list of available colors to pick from (excluding the default color #000000)
     static #availableColors: Color[] = ["#F44336", "#2196F3", "#4CAF50", "#FF9800", "#795548"];
 
@@ -41,7 +41,7 @@ class Tile{
     //Primary Method
     //Displays Tile object's properties to the HTML Document
     public display(): void {
-        for (let shape of Tile.availableShapes) {
+        for (let shape of Tile.#availableShapes) {
             this.#element.classList.remove(shape);
         }
 
@@ -98,13 +98,13 @@ class Tile{
         return this.#shape;
     }
 
-    public getDivElement(): HTMLDivElement{
+    public getDivElement(): HTMLDivElement {
         return this.#element;
     }
 
-    public static getAvailableColors(): Color[]{
+    public static getAvailableColors(): Color[] {
         return this.#availableColors;
-    } 
+    }
 
     public static getAvailableShapes(): Shape[] {
         return this.#availableShapes;

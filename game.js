@@ -1,9 +1,14 @@
 "use strict";
-var currentCondition;
-var grid;
+let currentCondition;
+let grid;
+/**
+ * Sets up the page
+ */
 function initializeGame() {
-    grid = new Grid(8, 8, document.getElementById('grid'));
-    grid.display();
+    grid = new Grid(8, 8, (document.getElementById("grid")));
+    startGame();
+}
+function startGame() {
     grid.dropRandomNumber();
 }
 //# sourceMappingURL=game.js.map
