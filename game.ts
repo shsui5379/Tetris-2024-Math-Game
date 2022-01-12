@@ -1,12 +1,14 @@
-var currentCondition: MergeCondition;
-var grid: Grid;
+let currentCondition: MergeCondition;
+let grid: Grid;
 
-function initializeGame(): void{
-    grid = new Grid(8, 8, <HTMLDivElement>document.getElementById('grid'));
-    grid.display();
-    startGame();
+/**
+ * Sets up the page
+ */
+function initializeGame(): void {
+   grid = new Grid(8, 8, <HTMLDivElement>(document.getElementById("grid")));
+   startGame();
 }
 
-function startGame(): void{
+function startGame(): void {
     grid.dropRandomNumber();
 }

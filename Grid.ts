@@ -1,4 +1,4 @@
-class Grid{
+class Grid {
     //Number of rows in a Grid object
     #numRow: number;
 
@@ -11,41 +11,49 @@ class Grid{
     //Test
     #coolDown: number;
 
-    //Constructs a 2D grid object and initializes it on call
-    constructor(row: number, column: number, element: HTMLDivElement){
+    /**
+     * Constructs a Grid with the given dimensions, and render it on the display
+     * @constructor
+     * 
+     * @param {number} row  The number of rows for this Grid
+     * @param {number} column  The number of columns for this Grid
+     * @param {HTMLDivElement} element  The HTML div element to render this Grid on
+     */
+    constructor(row: number, column: number, element: HTMLDivElement) {
         this.#numRow = row;
         this.#numCol = column;
-        this.#grid = [[]];
+        this.#grid = [];
         this.#coolDown = 3;
+      
         this.makeGrid(this.#numRow, this.#numCol, element);
-
+      
         console.log(this.#grid);
     }
 
     //Initializes the 2D Grid object by creating (row * col) Tile objects
     makeGrid(row: number, col: number, element: HTMLDivElement): void{
-        var grid = this.#grid;
-        for (let r=0; r<row; r++){
-            grid[r] = new Array(col);
-            for (let c=0; c<col; c++){
-                grid[r][c] = new Tile(element);
+        for (let r = 0; r < row; r++) {
+            let rowOfTiles: Tile[] = [];
+
+            for (let c = 0; c < col; c++) {
+                rowOfTiles.push(new Tile(element));
             }
+
+            this.#grid.push(rowOfTiles);
+
+            element.appendChild(document.createElement("br"));
         }
     }
 
-    //Refreshes and updates each Tile object 
-    display(): void{
-        var grid = this.#grid;
-        grid.forEach(function(row: Tile[]): void{   
-            row.forEach(function(tile: Tile): void{
+    /**
+     * Updates the display to reflect the current state of its Tiles
+     */
+    display(): void {
+        for (let row of this.#grid) {
+            for (let tile of row) {
                 tile.display();
-            });
-        });
-    }
-
-    //Receives user inputs in the form of arrow keys to move Tiles
-    moveTiles(condition: MergeCondition){
-        //Uses methods from the merge condition
+            }
+        }
     }
 
     //Checks if the current Tile can be moved down
@@ -70,6 +78,12 @@ class Grid{
     mergeTileRight(tileRow: number, tileCol: number): boolean{
         return false;
     }
+  
+    mergeTilesDown(condition: MergeCondition): number {}
+  
+    mergeTilesLeft(condition: MergeCondition): number{}
+  
+    mergeTilesRight(condition: MergeCondition): number {}
 
     dropRandomNumber(): boolean{
         var grid = this.#grid;
@@ -121,11 +135,10 @@ class Grid{
                 tile.empty();
             });
         });
+        this.display();
     }
    }
     /*
         When the game begins, drop a tile and when it touches the floor,
         let the cooldown begin. After the cooldown, keep dropping tile.
     */
-}
-
