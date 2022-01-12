@@ -7,6 +7,32 @@ function initializeGame(): void{
     startGame();
 }
 
+/*
+    To implement the cooldown, the first Tile dropped must not have any delay.
+    Subsequent tiles will have the cooldown in effect.
+*/
 function startGame(): void{
-    grid.dropRandomNumber();
+    configureDropInterval();
+}
+
+function configureDropInterval(): void{
+    var delay = grid.dropRandomNumber(); //The first Tile dropped should not have a cooldown
+    if (delay === false) gameOver();
+
+    var intervalID = setInterval(() => {
+        delay = grid.dropRandomNumber();
+        if (delay === false){
+            gameOver();
+            clearInterval(intervalID);
+        }
+    }, <number>delay);
+}
+
+function gameOver(): void{
+    displayMessage("nob");
+}
+
+function displayMessage(message: string): string{
+    //Some message
+    return "";
 }
