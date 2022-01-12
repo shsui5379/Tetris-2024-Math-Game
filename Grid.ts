@@ -118,7 +118,7 @@ class Grid{
         while (this.isValidLocation(r, col)){
             if (grid[r][col].isEmpty()) emptyTileCount++;
             r++;
-        }
+        }   
 
         return emptyTileCount * this.getDropTime();
     }

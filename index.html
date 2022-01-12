@@ -18,8 +18,19 @@
    <link rel="stylesheet" href="style.css" />
 </head>
 
-<body onload="initializeGame();">
+<body onload="initializeGame();" onkeydown="keyHandler(event);">
+   <div id="condition" class="message-board"></div>
+
    <div id="grid" class="grid"></div>
+
+   <div class="scoreboard">
+      Score: <span id="score"></span>
+      <br />
+      High score: <span id="highscore"></span>
+   </div>
+
+   <button id="reset" onclick="reset();" type="button">Reset</button>
+   <button id="instructions" onclick="toggleInstructions(true);" type="button">Help</button>
 </body>
 
 </html>
