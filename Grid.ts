@@ -93,12 +93,13 @@ class Grid {
         else {
             let randomNumber = Math.floor((Math.random() * 3) + 1); //Generates number in interval [1,3]
             let randomColor = Tile.getAvailableColors()[Math.floor((Math.random() * Tile.getAvailableColors().length))]; //Generates a number in interval [0,Tile.availableColors().length-1]
+            let randomShape = Tile.getAvailableShapes()[Math.floor((Math.random() * Tile.getAvailableShapes().length))];
 
             console.log(randomColumn, randomColor, randomNumber);
             //Update the first Tile object in row 1 to the randomly generated Tile properties
             grid[0][randomColumn].setColor(randomColor as Color);
             grid[0][randomColumn].setNumber(randomNumber);
-            grid[0][randomColumn].setShape("square");
+            grid[0][randomColumn].setShape(randomShape);
             grid[0][randomColumn].display();
 
             //Begin to drop the Tile object starting at the next row 
