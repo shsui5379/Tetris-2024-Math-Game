@@ -4,6 +4,7 @@
         "module": "commonjs",
         "sourceMap": true,
         "strict": true,
+        "strictPropertyInitialization": false,
         "forceConsistentCasingInFileNames": true
     }
 }

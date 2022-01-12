@@ -1,3 +1,4 @@
+let currentCondition: MergeCondition;
 let grid: Grid;
 
 /**
@@ -5,4 +6,9 @@ let grid: Grid;
  */
 function initializeGame(): void {
    grid = new Grid(8, 8, <HTMLDivElement>(document.getElementById("grid")));
+   startGame();
+}
+
+function startGame(): void {
+    grid.dropRandomNumber();
 }

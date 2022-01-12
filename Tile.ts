@@ -3,8 +3,14 @@ type Shape = "square";
 type Color = "#000000" | "#F44336" | "#2196F3" | "#4CAF50" | "#FF9800" | "#795548";
 type TileNumber = number | "";
 
-class Tile {
-    //Properties
+class Tile{
+//Properties
+    //A list of available colors to pick from (excluding the default color #000000)
+    static #availableColors: Color[] = ["#F44336", "#2196F3", "#4CAF50", "#FF9800", "#795548"];
+
+    //A list of available shapes to pick from
+    static #availableShapes: Shape[] = ["square"];
+
     //The numerical value that a Tile object displays
     #number: TileNumber;
 
@@ -17,9 +23,6 @@ class Tile {
     //The HTMLDivElement that represents the Tile object
     #element: HTMLDivElement;
 
-    static readonly possibleColors: Color[] = ["#F44336", "#2196F3", "#4CAF50", "#FF9800", "#795548"];
-
-    static readonly possibleShapes: Shape[] = ["square"];
 
     //Constructor
     //Receives the Grid object to be appended with a Tile object in its default state
@@ -38,7 +41,7 @@ class Tile {
     //Primary Method
     //Displays Tile object's properties to the HTML Document
     public display(): void {
-        for (let shape of Tile.possibleShapes) {
+        for (let shape of Tile.availableShapes) {
             this.#element.classList.remove(shape);
         }
 
@@ -81,6 +84,7 @@ class Tile {
         other.setShape(thisTileShape);
         other.setNumber(thisTileNumber);
     }
+
     //Getter Methods
     public getNumber(): TileNumber {
         return this.#number;
@@ -92,6 +96,18 @@ class Tile {
 
     public getShape(): Shape {
         return this.#shape;
+    }
+
+    public getDivElement(): HTMLDivElement{
+        return this.#element;
+    }
+
+    public static getAvailableColors(): Color[]{
+        return this.#availableColors;
+    } 
+
+    public static getAvailableShapes(): Shape[] {
+        return this.#availableShapes;
     }
 
     //Setter Methods
