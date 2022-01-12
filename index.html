@@ -19,7 +19,18 @@
 </head>
 
 <body onload="initializeGame();">
+   <div id="condition" class="message-board"></div>
+
    <div id="grid" class="grid"></div>
+
+   <div class="scoreboard">
+      Score: <span id="score"></span>
+      <br />
+      High score: <span id="highscore"></span>
+   </div>
+
+   <button id="reset" onclick="reset();" type="button">Reset</button>
+   <button id="instructions" onclick="toggleInstructions(true);" type="button">Help</button>
 
 </body>
 
