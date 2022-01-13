@@ -122,20 +122,25 @@ function displayScore(current: number, highscore: number): void {
     (<HTMLSpanElement>document.getElementById("highscore")).innerText = highscore.toString();
 }
 
-function configureDropInterval(): void{
+function configureDropInterval(): void {
     var delay = grid.dropRandomNumber(); //The first Tile dropped should not have a cooldown
     if (delay === false) gameOver();
+    dropInterval(<number>delay);
+}
 
-    var intervalID = setInterval(() => {
+function dropInterval(delay: number | boolean): void {
+    setTimeout(() => {
         delay = grid.dropRandomNumber();
-        if (delay === false){
+        if (delay === false) {
             gameOver();
-            clearInterval(intervalID);
+        }
+        else {
+            dropInterval(delay);
         }
     }, <number>delay);
 }
 
-function gameOver(): void{
+function gameOver(): void {
     ongoing = false;
     printOnMessageBoard("Game over");
     if (score > parseInt(<string>localStorage.getItem("highscore"))) {

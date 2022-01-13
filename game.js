@@ -114,11 +114,16 @@ function configureDropInterval() {
     var delay = grid.dropRandomNumber(); //The first Tile dropped should not have a cooldown
     if (delay === false)
         gameOver();
-    var intervalID = setInterval(() => {
+    dropInterval(delay);
+}
+function dropInterval(delay) {
+    setTimeout(() => {
         delay = grid.dropRandomNumber();
         if (delay === false) {
             gameOver();
-            clearInterval(intervalID);
+        }
+        else {
+            dropInterval(delay);
         }
     }, delay);
 }
