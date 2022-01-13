@@ -53,9 +53,13 @@ class Tile {
     }
     //Merges a Tile object with another Tile object
     merge(other) {
+        var thisEmpty = this.isEmpty();
+        var otherEmpty = other.isEmpty();
         var newNumber = (__classPrivateFieldGet(this, _Tile_number, "f") || 0) + (other.getNumber() || 0);
-        this.setNumber(newNumber);
-        other.empty();
+        if (!thisEmpty && !otherEmpty) {
+            other.empty();
+            this.setNumber(newNumber);
+        }
     }
     //Swaps the properties of a Tile object with another Tile object
     swap(other) {

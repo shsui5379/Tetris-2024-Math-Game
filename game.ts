@@ -1,4 +1,4 @@
-let currentCondition: MergeCondition;
+let currentCondition: MergeCondition; //Testing
 let grid: Grid;
 let score: number;
 let ongoing: boolean;
@@ -28,6 +28,7 @@ function initializeGame(): void {
 function startGame(): void {
     score = 0;
     ongoing = true;
+    changeCondition();
     configureDropInterval();
 }
 
@@ -58,10 +59,13 @@ function keyHandler(e: KeyboardEvent): void {
     if (ongoing) {
         if (e.key == "ArrowDown") {
             console.log("down key pressed");
+            grid.mergeTilesDown(currentCondition);
         } else if (e.key == "ArrowLeft") {
             console.log("left key pressed");
+            grid.mergeTilesLeft(currentCondition);
         } else if (e.key == "ArrowRight") {
             console.log("right key pressed");
+            grid.mergeTilesRight(currentCondition);
         }
     }
 }
@@ -82,12 +86,15 @@ function swipeHandler(e: TouchEvent): void {
             if (Math.abs(xDiff) > Math.abs(yDiff)) { //horizontal swipe
                 if (xDiff > 0) {
                     console.log("swiped right");
+                    grid.mergeTilesRight(currentCondition);
                 } else {
                     console.log("swiped left");
+                    grid.mergeTilesLeft(currentCondition);
                 }
             } else {
                 if (yDiff > 0) {
                     console.log("swiped down");
+                    grid.mergeTilesDown(currentCondition);
                 }
             }
         }
@@ -98,8 +105,7 @@ function swipeHandler(e: TouchEvent): void {
  * Changes the current merge condition
  */
 function changeCondition(): void {
-
-
+    currentCondition = possibleConditions[Math.floor(Math.random() * possibleConditions.length)];
 
     printOnMessageBoard(currentCondition.toString());
 }
