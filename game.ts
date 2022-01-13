@@ -86,12 +86,15 @@ function swipeHandler(e: TouchEvent): void {
             if (Math.abs(xDiff) > Math.abs(yDiff)) { //horizontal swipe
                 if (xDiff > 0) {
                     console.log("swiped right");
+                    grid.mergeTilesRight(currentCondition);
                 } else {
                     console.log("swiped left");
+                    grid.mergeTilesLeft(currentCondition);
                 }
             } else {
                 if (yDiff > 0) {
                     console.log("swiped down");
+                    grid.mergeTilesDown(currentCondition);
                 }
             }
         }
