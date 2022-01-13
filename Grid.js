@@ -33,7 +33,7 @@ class Grid {
         _Grid_dropTime.set(this, void 0);
         __classPrivateFieldSet(this, _Grid_numRow, row, "f");
         __classPrivateFieldSet(this, _Grid_numCol, column, "f");
-        __classPrivateFieldSet(this, _Grid_grid, [[]], "f");
+        __classPrivateFieldSet(this, _Grid_grid, [], "f");
         __classPrivateFieldSet(this, _Grid_coolDown, 1000, "f");
         __classPrivateFieldSet(this, _Grid_dropTime, 100, "f");
         this.makeGrid(__classPrivateFieldGet(this, _Grid_numRow, "f"), __classPrivateFieldGet(this, _Grid_numCol, "f"), element);
@@ -56,8 +56,8 @@ class Grid {
         for (let row of __classPrivateFieldGet(this, _Grid_grid, "f")) {
             for (let tile of row) {
                 tile.display();
-            });
-        });
+            }
+        }
     }
     //Receives user inputs in the form of arrow keys to move Tiles
     mergeTilesRight(condition) {

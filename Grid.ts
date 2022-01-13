@@ -54,66 +54,66 @@ class Grid {
         for (let row of this.#grid) {
             for (let tile of row) {
                 tile.display();
-            });
-        });
+            }
+        }
     }
 
     //Receives user inputs in the form of arrow keys to move Tiles
-    mergeTilesRight(condition: MergeCondition){
+    mergeTilesRight(condition: MergeCondition) {
         console.log("ATTEMPTING TO MERGE RIGHT");
         var grid = this.#grid;
-        var rows = this.#numRow-1;
-        var cols = this.#numCol-1;
+        var rows = this.#numRow - 1;
+        var cols = this.#numCol - 1;
 
-        for (let r=0; r<=rows; r++){
-            for (let c=cols; c>=0; c--){
+        for (let r = 0; r <= rows; r++) {
+            for (let c = cols; c >= 0; c--) {
                 let temp = c;
-                while (this.isValidLocation(r, temp) && grid[r][temp].isEmpty()){
+                while (this.isValidLocation(r, temp) && grid[r][temp].isEmpty()) {
                     temp--;
                 }
 
                 //If a non-empty Tile is found, check for merges
-                if (this.isValidLocation(r, temp)){
+                if (this.isValidLocation(r, temp)) {
                     //Before any merges, we will shift the found Tile to the current column
                     if (grid[r][c].isEmpty()) grid[r][c].swap(grid[r][temp]);
-                    if (this.isValidLocation(r, c+1)){
-                        if (condition.check(grid[r][c], grid[r][c+1])){
+                    if (this.isValidLocation(r, c + 1)) {
+                        if (condition.check(grid[r][c], grid[r][c + 1])) {
                             console.log("CONDITION VERIIED");
-                            grid[r][c+1].merge(grid[r][c]);
-                            
+                            grid[r][c + 1].merge(grid[r][c]);
+
                             //Merging will leave a gap, so check this column again for more merges
                             c++;
                         }
                     }
                 }
-            }        
+            }
         }
         this.dropColumn();
         this.display();
     }
 
-    mergeTilesDown(condition: MergeCondition){
+    mergeTilesDown(condition: MergeCondition) {
         console.log("ATTEMPTING TO MERGE DOWN");
         var grid = this.#grid;
-        var rows = this.#numRow-1;
-        var cols = this.#numCol-1;
+        var rows = this.#numRow - 1;
+        var cols = this.#numCol - 1;
 
-        for (let c=0; c<=cols; c++){
-            for (let r=rows; r>=0; r--){
+        for (let c = 0; c <= cols; c++) {
+            for (let r = rows; r >= 0; r--) {
                 let temp = r;
-                while (this.isValidLocation(temp, c) && grid[temp][c].isEmpty()){
+                while (this.isValidLocation(temp, c) && grid[temp][c].isEmpty()) {
                     temp--;
                 }
 
                 //If a non-empty Tile is found, check for merges
-                if (this.isValidLocation(temp, c)){
+                if (this.isValidLocation(temp, c)) {
                     //Before any merges, we will shift the found Tile to the current row
                     if (grid[r][c].isEmpty()) grid[r][c].swap(grid[temp][c]);
 
                     //Check for a merge
-                    if (this.isValidLocation(r+1, c)){
-                        if (condition.check(grid[r][c], grid[r+1][c])){
-                            grid[r+1][c].merge(grid[r][c]);
+                    if (this.isValidLocation(r + 1, c)) {
+                        if (condition.check(grid[r][c], grid[r + 1][c])) {
+                            grid[r + 1][c].merge(grid[r][c]);
 
                             //Merging will leave a gap, so check this column again for more merges
                             r++;
@@ -126,26 +126,26 @@ class Grid {
         this.display();
     }
 
-    mergeTilesLeft(condition: MergeCondition){
+    mergeTilesLeft(condition: MergeCondition) {
         console.log("ATTEMPTING TO MERGE LEFT");
         var grid = this.#grid;
-        var rows = this.#numRow-1;
-        var cols = this.#numCol-1;
+        var rows = this.#numRow - 1;
+        var cols = this.#numCol - 1;
 
-        for (let r=0; r<=rows; r++){
-            for (let c=0; c<=cols; c++){
+        for (let r = 0; r <= rows; r++) {
+            for (let c = 0; c <= cols; c++) {
                 let temp = c;
-                while (this.isValidLocation(r, temp) && grid[r][temp].isEmpty()){
+                while (this.isValidLocation(r, temp) && grid[r][temp].isEmpty()) {
                     temp++;
                 }
 
                 //If a non-empty Tile is found, check for merges
-                if (this.isValidLocation(r, temp)){
+                if (this.isValidLocation(r, temp)) {
                     //Before any merges, we will shift the found Tile to the current column
                     if (grid[r][c].isEmpty()) grid[r][c].swap(grid[r][temp]);
-                    if (this.isValidLocation(r, c-1)){
-                        if (condition.check(grid[r][c], grid[r][c-1])){
-                            grid[r][c-1].merge(grid[r][c]);
+                    if (this.isValidLocation(r, c - 1)) {
+                        if (condition.check(grid[r][c], grid[r][c - 1])) {
+                            grid[r][c - 1].merge(grid[r][c]);
 
                             //Merging will leave a gap, so check this column again for more merges
                             c--;
@@ -159,14 +159,14 @@ class Grid {
     }
 
     //Gravity effect when Tiles are merged
-    dropColumn(){
+    dropColumn() {
         console.log("dropping column");
-        var r = this.#numRow-1;
-        var c = this.#numCol-1;
-        for (let col=0; col<=c; col++){
-            for (let row=r; row>=0; row--){
+        var r = this.#numRow - 1;
+        var c = this.#numCol - 1;
+        for (let col = 0; col <= c; col++) {
+            for (let row = r; row >= 0; row--) {
                 let tempRow = row;
-                while (this.moveTileDown(tempRow, col)){
+                while (this.moveTileDown(tempRow, col)) {
                     tempRow++;
                 }
             }
@@ -189,7 +189,7 @@ class Grid {
         }
     }
 
-    dropRandomNumber(): (boolean | number){
+    dropRandomNumber(): (boolean | number) {
         var grid = this.#grid;
         var randomColumn = Math.floor((Math.random() * this.#numCol)); //Generates a number in interval [0,this.#numCol-1]
 
@@ -208,10 +208,10 @@ class Grid {
 
             let currRow = 0;
             let currCol = randomColumn;
-            let totalDropTime = this.calculateDropSeconds(currRow+1, currCol);
+            let totalDropTime = this.calculateDropSeconds(currRow + 1, currCol);
 
             let dropInterval = setInterval(() => {
-                if ((!this.moveTileDown(currRow, currCol))){
+                if ((!this.moveTileDown(currRow, currCol))) {
                     clearInterval(dropInterval);
                 }
                 else {
@@ -226,14 +226,14 @@ class Grid {
     }
 
     //Calculates the number of seconds for a Tile to touch the ground
-    calculateDropSeconds(row: number, col: number): number{
+    calculateDropSeconds(row: number, col: number): number {
         var grid = this.#grid;
         var emptyTileCount = 0;
         var r = row;
-        while (this.isValidLocation(r, col) && grid[r][col].isEmpty()){
+        while (this.isValidLocation(r, col) && grid[r][col].isEmpty()) {
             emptyTileCount++;
             r++;
-        }   
+        }
 
         return (emptyTileCount * this.getDropTime());
     }
@@ -253,22 +253,22 @@ class Grid {
         });
         this.display();
     }
-   
+
     //Setter Method(s)
-    setCoolDown(cd: number): void{
+    setCoolDown(cd: number): void {
         this.#coolDown = cd;
     }
 
-    setDropTime(dt: number): void{
+    setDropTime(dt: number): void {
         this.#dropTime = dt;
     }
 
     //Getter Method(s)
-    getCoolDown(): number{
+    getCoolDown(): number {
         return this.#coolDown;
     }
 
-    getDropTime(): number{
+    getDropTime(): number {
         return this.#dropTime;
     }
 }
