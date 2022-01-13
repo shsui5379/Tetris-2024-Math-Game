@@ -1,4 +1,4 @@
-let currentCondition: MergeCondition = possibleConditions[0]; //Testing
+let currentCondition: MergeCondition; //Testing
 let grid: Grid;
 let score: number;
 let ongoing: boolean;
@@ -28,6 +28,7 @@ function initializeGame(): void {
 function startGame(): void {
     score = 0;
     ongoing = true;
+    changeCondition();
     configureDropInterval();
 }
 
@@ -101,7 +102,7 @@ function swipeHandler(e: TouchEvent): void {
  * Changes the current merge condition
  */
 function changeCondition(): void {
-
+    currentCondition = possibleConditions[Math.floor(Math.random() * possibleConditions.length)];
 
     printOnMessageBoard(currentCondition.toString());
 }
@@ -124,25 +125,25 @@ function displayScore(current: number, highscore: number): void {
     (<HTMLSpanElement>document.getElementById("highscore")).innerText = highscore.toString();
 }
 
-function configureDropInterval(): void{
+function configureDropInterval(): void {
     var delay = grid.dropRandomNumber(); //The first Tile dropped should not have a cooldown
     if (delay === false) gameOver();
     dropInterval(<number>delay);
 }
 
-function dropInterval(delay: number | boolean): void{
+function dropInterval(delay: number | boolean): void {
     setTimeout(() => {
         delay = grid.dropRandomNumber();
-        if (delay === false){
+        if (delay === false) {
             gameOver();
         }
-        else{
+        else {
             dropInterval(delay);
         }
     }, <number>delay);
 }
 
-function gameOver(): void{
+function gameOver(): void {
     ongoing = false;
     printOnMessageBoard("Game over");
     if (score > parseInt(<string>localStorage.getItem("highscore"))) {

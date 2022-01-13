@@ -1,5 +1,5 @@
 "use strict";
-let currentCondition = possibleConditions[0]; //Testing
+let currentCondition; //Testing
 let grid;
 let score;
 let ongoing;
@@ -24,6 +24,7 @@ function initializeGame() {
 function startGame() {
     score = 0;
     ongoing = true;
+    changeCondition();
     configureDropInterval();
 }
 /**
@@ -95,6 +96,7 @@ function swipeHandler(e) {
  * Changes the current merge condition
  */
 function changeCondition() {
+    currentCondition = possibleConditions[Math.floor(Math.random() * possibleConditions.length)];
     printOnMessageBoard(currentCondition.toString());
 }
 /**
