@@ -28,13 +28,7 @@ function initializeGame(): void {
 function startGame(): void {
     score = 0;
     ongoing = true;
-    if (!grid.dropRandomNumber()) {
-        ongoing = false;
-        printOnMessageBoard("Game over");
-        if (score > parseInt(<string>localStorage.getItem("highscore"))) {
-            localStorage.setItem("highscore", score.toString());
-        }
-    }
+    configureDropInterval();
 }
 
 /**
@@ -126,4 +120,30 @@ function printOnMessageBoard(message: string): void {
 function displayScore(current: number, highscore: number): void {
     (<HTMLSpanElement>document.getElementById("score")).innerText = current.toString();
     (<HTMLSpanElement>document.getElementById("highscore")).innerText = highscore.toString();
+}
+
+function configureDropInterval(): void {
+    var delay = grid.dropRandomNumber(); //The first Tile dropped should not have a cooldown
+    if (delay === false) gameOver();
+    dropInterval(<number>delay);
+}
+
+function dropInterval(delay: number | boolean): void {
+    setTimeout(() => {
+        delay = grid.dropRandomNumber();
+        if (delay === false) {
+            gameOver();
+        }
+        else {
+            dropInterval(delay);
+        }
+    }, <number>delay);
+}
+
+function gameOver(): void {
+    ongoing = false;
+    printOnMessageBoard("Game over");
+    if (score > parseInt(<string>localStorage.getItem("highscore"))) {
+        localStorage.setItem("highscore", score.toString());
+    }
 }

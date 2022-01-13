@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _Grid_numRow, _Grid_numCol, _Grid_grid, _Grid_coolDown;
+var _Grid_numRow, _Grid_numCol, _Grid_grid, _Grid_coolDown, _Grid_dropTime;
 class Grid {
     /**
      * Constructs a Grid with the given dimensions, and render it on the display
@@ -27,12 +27,15 @@ class Grid {
         _Grid_numCol.set(this, void 0);
         //2D Tile array representing the Grid object
         _Grid_grid.set(this, void 0);
-        //Test
+        //The cooldown before dropping another Tile after a Tile lands in ms
         _Grid_coolDown.set(this, void 0);
+        //The time for a Tile to move from one row to another in ms
+        _Grid_dropTime.set(this, void 0);
         __classPrivateFieldSet(this, _Grid_numRow, row, "f");
         __classPrivateFieldSet(this, _Grid_numCol, column, "f");
-        __classPrivateFieldSet(this, _Grid_grid, [], "f");
-        __classPrivateFieldSet(this, _Grid_coolDown, 3, "f");
+        __classPrivateFieldSet(this, _Grid_grid, [[]], "f");
+        __classPrivateFieldSet(this, _Grid_coolDown, 3000, "f");
+        __classPrivateFieldSet(this, _Grid_dropTime, 1000, "f");
         this.makeGrid(__classPrivateFieldGet(this, _Grid_numRow, "f"), __classPrivateFieldGet(this, _Grid_numCol, "f"), element);
         console.log(__classPrivateFieldGet(this, _Grid_grid, "f"));
     }
@@ -97,14 +100,11 @@ class Grid {
             grid[0][randomColumn].setNumber(randomNumber);
             grid[0][randomColumn].setShape(randomShape);
             grid[0][randomColumn].display();
-            //Begin to drop the Tile object starting at the next row 
             let currRow = 0;
             let currCol = randomColumn;
+            let totalDropTime = this.calculateDropSeconds(currRow + 1, currCol);
             let dropInterval = setInterval(() => {
-                console.log("testing drop interval with row: " + currRow);
                 if ((!this.moveTileDown(currRow, currCol))) {
-                    console.log("interval is cleared");
-                    setTimeout(() => this.dropRandomNumber(), 3000);
                     clearInterval(dropInterval);
                 }
                 else {
@@ -112,9 +112,21 @@ class Grid {
                     this.display();
                     currRow++;
                 }
-            }, 1000);
-            return true;
+            }, this.getDropTime());
+            return (__classPrivateFieldGet(this, _Grid_coolDown, "f") + totalDropTime);
         }
+    }
+    //Calculates the number of seconds for a Tile to touch the ground
+    calculateDropSeconds(row, col) {
+        var grid = __classPrivateFieldGet(this, _Grid_grid, "f");
+        var emptyTileCount = 0;
+        var r = row;
+        while (this.isValidLocation(r, col)) {
+            if (grid[r][col].isEmpty())
+                emptyTileCount++;
+            r++;
+        }
+        return emptyTileCount * this.getDropTime();
     }
     //Checks if a Tile object’s row/col values are out of bounds
     isValidLocation(tileRow, tileCol) {
@@ -130,10 +142,20 @@ class Grid {
         });
         this.display();
     }
+    //Setter Method(s)
+    setCoolDown(cd) {
+        __classPrivateFieldSet(this, _Grid_coolDown, cd, "f");
+    }
+    setDropTime(dt) {
+        __classPrivateFieldSet(this, _Grid_dropTime, dt, "f");
+    }
+    //Getter Method(s)
+    getCoolDown() {
+        return __classPrivateFieldGet(this, _Grid_coolDown, "f");
+    }
+    getDropTime() {
+        return __classPrivateFieldGet(this, _Grid_dropTime, "f");
+    }
 }
-_Grid_numRow = new WeakMap(), _Grid_numCol = new WeakMap(), _Grid_grid = new WeakMap(), _Grid_coolDown = new WeakMap();
-/*
-When the game begins, drop a tile and when it touches the floor,
-let the cooldown begin. After the cooldown, keep dropping tile.
-*/
+_Grid_numRow = new WeakMap(), _Grid_numCol = new WeakMap(), _Grid_grid = new WeakMap(), _Grid_coolDown = new WeakMap(), _Grid_dropTime = new WeakMap();
 //# sourceMappingURL=Grid.js.map

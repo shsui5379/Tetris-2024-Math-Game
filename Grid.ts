@@ -8,8 +8,11 @@ class Grid {
     //2D Tile array representing the Grid object
     #grid: Tile[][];
 
-    //Test
+    //The cooldown before dropping another Tile after a Tile lands in ms
     #coolDown: number;
+
+    //The time for a Tile to move from one row to another in ms
+    #dropTime: number;
 
     /**
      * Constructs a Grid with the given dimensions, and render it on the display
@@ -23,7 +26,8 @@ class Grid {
         this.#numRow = row;
         this.#numCol = column;
         this.#grid = [];
-        this.#coolDown = 3;
+        this.#coolDown = 3000;
+        this.#dropTime = 1000;
 
         this.makeGrid(this.#numRow, this.#numCol, element);
 
@@ -79,13 +83,7 @@ class Grid {
         return false;
     }
 
-    mergeTilesDown(condition: MergeCondition): number { return 0; }
-
-    mergeTilesLeft(condition: MergeCondition): number { return 0; }
-
-    mergeTilesRight(condition: MergeCondition): number { return 0; }
-
-    dropRandomNumber(): boolean {
+    dropRandomNumber(): (boolean | number){
         var grid = this.#grid;
         var randomColumn = Math.floor((Math.random() * this.#numCol)); //Generates a number in interval [0,this.#numCol-1]
 
@@ -102,14 +100,12 @@ class Grid {
             grid[0][randomColumn].setShape(randomShape);
             grid[0][randomColumn].display();
 
-            //Begin to drop the Tile object starting at the next row 
             let currRow = 0;
             let currCol = randomColumn;
+            let totalDropTime = this.calculateDropSeconds(currRow+1, currCol);
+
             let dropInterval = setInterval(() => {
-                console.log("testing drop interval with row: " + currRow);
-                if ((!this.moveTileDown(currRow, currCol))) {
-                    console.log("interval is cleared");
-                    setTimeout(() => this.dropRandomNumber(), 3000);
+                if ((!this.moveTileDown(currRow, currCol))){
                     clearInterval(dropInterval);
                 }
                 else {
@@ -117,10 +113,23 @@ class Grid {
                     this.display();
                     currRow++;
                 }
-            }, 1000);
+            }, this.getDropTime());
 
-            return true;
+            return (this.#coolDown + totalDropTime);
         }
+    }
+
+    //Calculates the number of seconds for a Tile to touch the ground
+    calculateDropSeconds(row: number, col: number): number{
+        var grid = this.#grid;
+        var emptyTileCount = 0;
+        var r = row;
+        while (this.isValidLocation(r, col)){
+            if (grid[r][col].isEmpty()) emptyTileCount++;
+            r++;
+        }   
+
+        return emptyTileCount * this.getDropTime();
     }
 
     //Checks if a Tile object’s row/col values are out of bounds
@@ -138,8 +147,26 @@ class Grid {
         });
         this.display();
     }
+   
+    //Setter Method(s)
+    setCoolDown(cd: number): void{
+        this.#coolDown = cd;
+    }
+
+    setDropTime(dt: number): void{
+        this.#dropTime = dt;
+    }
+
+    //Getter Method(s)
+    getCoolDown(): number{
+        return this.#coolDown;
+    }
+
+    getDropTime(): number{
+        return this.#dropTime;
+    }
 }
-    /*
+/*
 When the game begins, drop a tile and when it touches the floor,
 let the cooldown begin. After the cooldown, keep dropping tile.
 */

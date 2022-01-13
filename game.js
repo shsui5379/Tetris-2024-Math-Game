@@ -24,13 +24,7 @@ function initializeGame() {
 function startGame() {
     score = 0;
     ongoing = true;
-    if (!grid.dropRandomNumber()) {
-        ongoing = false;
-        printOnMessageBoard("Game over");
-        if (score > parseInt(localStorage.getItem("highscore"))) {
-            localStorage.setItem("highscore", score.toString());
-        }
-    }
+    configureDropInterval();
 }
 /**
  * Ends the current game, and starts a new one
@@ -115,5 +109,29 @@ function printOnMessageBoard(message) {
 function displayScore(current, highscore) {
     document.getElementById("score").innerText = current.toString();
     document.getElementById("highscore").innerText = highscore.toString();
+}
+function configureDropInterval() {
+    var delay = grid.dropRandomNumber(); //The first Tile dropped should not have a cooldown
+    if (delay === false)
+        gameOver();
+    dropInterval(delay);
+}
+function dropInterval(delay) {
+    setTimeout(() => {
+        delay = grid.dropRandomNumber();
+        if (delay === false) {
+            gameOver();
+        }
+        else {
+            dropInterval(delay);
+        }
+    }, delay);
+}
+function gameOver() {
+    ongoing = false;
+    printOnMessageBoard("Game over");
+    if (score > parseInt(localStorage.getItem("highscore"))) {
+        localStorage.setItem("highscore", score.toString());
+    }
 }
 //# sourceMappingURL=game.js.map
