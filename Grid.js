@@ -33,7 +33,7 @@ class Grid {
         _Grid_dropTime.set(this, void 0);
         __classPrivateFieldSet(this, _Grid_numRow, row, "f");
         __classPrivateFieldSet(this, _Grid_numCol, column, "f");
-        __classPrivateFieldSet(this, _Grid_grid, [[]], "f");
+        __classPrivateFieldSet(this, _Grid_grid, [], "f");
         __classPrivateFieldSet(this, _Grid_coolDown, 3000, "f");
         __classPrivateFieldSet(this, _Grid_dropTime, 1000, "f");
         this.makeGrid(__classPrivateFieldGet(this, _Grid_numRow, "f"), __classPrivateFieldGet(this, _Grid_numCol, "f"), element);
@@ -82,9 +82,6 @@ class Grid {
     mergeTileRight(tileRow, tileCol) {
         return false;
     }
-    mergeTilesDown(condition) { return 0; }
-    mergeTilesLeft(condition) { return 0; }
-    mergeTilesRight(condition) { return 0; }
     dropRandomNumber() {
         var grid = __classPrivateFieldGet(this, _Grid_grid, "f");
         var randomColumn = Math.floor((Math.random() * __classPrivateFieldGet(this, _Grid_numCol, "f"))); //Generates a number in interval [0,this.#numCol-1]
@@ -158,4 +155,8 @@ class Grid {
     }
 }
 _Grid_numRow = new WeakMap(), _Grid_numCol = new WeakMap(), _Grid_grid = new WeakMap(), _Grid_coolDown = new WeakMap(), _Grid_dropTime = new WeakMap();
+/*
+When the game begins, drop a tile and when it touches the floor,
+let the cooldown begin. After the cooldown, keep dropping tile.
+*/
 //# sourceMappingURL=Grid.js.map
