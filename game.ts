@@ -1,4 +1,4 @@
-let currentCondition: MergeCondition;
+let currentCondition: MergeCondition = possibleConditions[0]; //Testing
 let grid: Grid;
 let score: number;
 let ongoing: boolean;
@@ -58,10 +58,13 @@ function keyHandler(e: KeyboardEvent): void {
     if (ongoing) {
         if (e.key == "ArrowDown") {
             console.log("down key pressed");
+            grid.mergeTilesDown(currentCondition);
         } else if (e.key == "ArrowLeft") {
             console.log("left key pressed");
+            grid.mergeTilesLeft(currentCondition);
         } else if (e.key == "ArrowRight") {
             console.log("right key pressed");
+            grid.mergeTilesRight(currentCondition);
         }
     }
 }
@@ -100,7 +103,6 @@ function swipeHandler(e: TouchEvent): void {
 function changeCondition(): void {
 
 
-
     printOnMessageBoard(currentCondition.toString());
 }
 
@@ -125,12 +127,17 @@ function displayScore(current: number, highscore: number): void {
 function configureDropInterval(): void{
     var delay = grid.dropRandomNumber(); //The first Tile dropped should not have a cooldown
     if (delay === false) gameOver();
+    dropInterval(<number>delay);
+}
 
-    var intervalID = setInterval(() => {
+function dropInterval(delay: number | boolean): void{
+    setTimeout(() => {
         delay = grid.dropRandomNumber();
         if (delay === false){
             gameOver();
-            clearInterval(intervalID);
+        }
+        else{
+            dropInterval(delay);
         }
     }, <number>delay);
 }
