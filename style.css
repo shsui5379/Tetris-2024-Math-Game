@@ -1,89 +1,88 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    touch-action: none;
- }
- 
- .grid {
-    position: absolute;
- }
- 
- .tile {
-    display: inline-block;
-    width: 12%;
-    height: 12%;
-    vertical-align: top;
-    text-align: center;
-    /* border: 1px solid white; */
-    align-items: center;
-    color: white;
- }
- 
- @media (orientation: landscape) {
-    .grid {
-       width: 80vh;
-       height: 80vh;
-       top: 10vw;
-       left: calc((100vw - 80vh) / 2);
-    }
- 
-    .tile {
-       font: 4.5em Arial;
-       line-height: 100%;
-    }
- }
- 
- @media (orientation: portrait) {
-    .grid {
-       width: 100vw;
-       height: 100vw;
-       top: calc((100vh - 100vw) / 2);
-    }
- 
-    .tile {
-       font: 2.5em Arial;
-       line-height: 100%;
-    }
- }
- 
- .message-board {
-    height: 10vh;
-    text-align: center;
-    font: 3em Arial;
- }
- 
- button {
-    background-color: inherit;
-    font: inherit;
-    border-radius: 4px;
-    height: 36px;
-    padding: 0px 16px;
-    margin: 8px 14px;
-    outline: none;
- }
- button:hover {
-    box-shadow: 0px 2px 4px -1px rgba(0,0,0,.2), 0px 4px 5px 0px rgba(0,0,0,.14), 0px 1px 10px 0px rgba(0,0,0,.12);
- }
- button:active {
-    box-shadow: 0px 5px 5px -3px rgba(0,0,0,.2), 0px 8px 10px 1px rgba(0,0,0,.14), 0px 3px 14px 2px rgba(0,0,0,.12);
- }
- 
- #reset {
-    position: absolute;
-    bottom: 1%;
-    left: 1%
- }
- 
- #instructions {
-    position: absolute;
-    bottom: 1%;
-    right: 1%
- }
- 
- .scoreboard {
-    position: absolute;
-    left: 1%;
-    bottom: 15%;
-    font-size: 1.5em;
- }
+   font-family: Arial, Helvetica, sans-serif;
+   touch-action: none;
+   background-color: #FFCA28;
+}
 
- 
+.grid {
+   position: absolute;
+}
+
+.tile {
+   display: inline-block;
+   width: 12%;
+   height: 12%;
+   vertical-align: top;
+   text-align: center;
+   /* border: 1px solid white; */
+   align-items: center;
+   color: white;
+}
+
+@media (orientation: landscape) {
+   .grid {
+      width: 80vh;
+      height: 80vh;
+      top: 10vw;
+      left: calc((100vw - 80vh) / 2);
+   }
+
+   .tile {
+      font: 4.5em Arial;
+      line-height: 100%;
+   }
+}
+
+@media (orientation: portrait) {
+   .grid {
+      width: 100vw;
+      height: 100vw;
+      top: calc((100vh - 100vw) / 2);
+   }
+
+   .tile {
+      font: 2.5em Arial;
+      line-height: 100%;
+   }
+}
+
+.message-board {
+   height: 10vh;
+   text-align: center;
+   font: 3em Arial;
+}
+
+button {
+   background-color: inherit;
+   font: inherit;
+   border-radius: 4px;
+   height: 36px;
+   padding: 0px 16px;
+   margin: 8px 14px;
+   outline: none;
+}
+button:hover {
+   box-shadow: 0px 2px 4px -1px rgba(0,0,0,.2), 0px 4px 5px 0px rgba(0,0,0,.14), 0px 1px 10px 0px rgba(0,0,0,.12);
+}
+button:active {
+   box-shadow: 0px 5px 5px -3px rgba(0,0,0,.2), 0px 8px 10px 1px rgba(0,0,0,.14), 0px 3px 14px 2px rgba(0,0,0,.12);
+}
+
+#reset {
+   position: absolute;
+   bottom: 1%;
+   left: 1%
+}
+
+#instructions {
+   position: absolute;
+   bottom: 1%;
+   right: 1%
+}
+
+.scoreboard {
+   position: absolute;
+   left: 1%;
+   bottom: 15%;
+   font-size: 1.5em;
+}

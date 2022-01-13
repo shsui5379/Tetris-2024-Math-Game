@@ -153,4 +153,3 @@ function gameOver(): void {
         localStorage.setItem("highscore", score.toString());
     }
 }
-

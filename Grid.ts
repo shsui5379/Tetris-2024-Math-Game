@@ -1,4 +1,4 @@
-class Grid{
+class Grid {
     //Number of rows in a Grid object
     #numRow: number;
 
@@ -14,32 +14,45 @@ class Grid{
     //The time for a Tile to move from one row to another in ms
     #dropTime: number;
 
-    //Constructs a 2D grid object and initializes it on call
-    constructor(row: number, column: number, element: HTMLDivElement){
+    /**
+     * Constructs a Grid with the given dimensions, and render it on the display
+     * @constructor
+     * 
+     * @param {number} row  The number of rows for this Grid
+     * @param {number} column  The number of columns for this Grid
+     * @param {HTMLDivElement} element  The HTML div element to render this Grid on
+     */
+    constructor(row: number, column: number, element: HTMLDivElement) {
         this.#numRow = row;
         this.#numCol = column;
-        this.#grid = [[]];
+        this.#grid = [];
         this.#coolDown = 1000;
         this.#dropTime = 100;
+
         this.makeGrid(this.#numRow, this.#numCol, element);
     }
 
     //Initializes the 2D Grid object by creating (row * col) Tile objects
-    makeGrid(row: number, col: number, element: HTMLDivElement): void{
-        var grid = this.#grid;
-        for (let r=0; r<row; r++){
-            grid[r] = new Array(col);
-            for (let c=0; c<col; c++){
-                grid[r][c] = new Tile(element);
+    makeGrid(row: number, col: number, element: HTMLDivElement): void {
+        for (let r = 0; r < row; r++) {
+            let rowOfTiles: Tile[] = [];
+
+            for (let c = 0; c < col; c++) {
+                rowOfTiles.push(new Tile(element));
             }
+
+            this.#grid.push(rowOfTiles);
+
+            element.appendChild(document.createElement("br"));
         }
     }
 
-    //Refreshes and updates each Tile object 
-    display(): void{
-        var grid = this.#grid;
-        grid.forEach(function(row: Tile[]): void{   
-            row.forEach(function(tile: Tile): void{
+    /**
+     * Updates the display to reflect the current state of its Tiles
+     */
+    display(): void {
+        for (let row of this.#grid) {
+            for (let tile of row) {
                 tile.display();
             });
         });
@@ -161,17 +174,17 @@ class Grid{
     }
 
     //Checks if the current Tile can be moved down
-    moveTileDown(tileRow: number, tileCol: number): boolean{
+    moveTileDown(tileRow: number, tileCol: number): boolean {
         var grid = this.#grid;
-        var validLocation = this.isValidLocation(tileRow+1, tileCol);
+        var validLocation = this.isValidLocation(tileRow + 1, tileCol);
         if (!validLocation) return false;
-        var empty = grid[tileRow+1][tileCol].isEmpty();
+        var empty = grid[tileRow + 1][tileCol].isEmpty();
 
         console.log("moving tile down");
         if (!empty) return false;       //Checks if Tile[row+1][col] is out of bounds or empty
-        else{
+        else {
             console.log('preparing to swap tiles');
-            grid[tileRow+1][tileCol].swap(grid[tileRow][tileCol]);  //Swaps the current [row][col] with [row+1][col]
+            grid[tileRow + 1][tileCol].swap(grid[tileRow][tileCol]);  //Swaps the current [row][col] with [row+1][col]
             return true;
         }
     }
@@ -181,15 +194,16 @@ class Grid{
         var randomColumn = Math.floor((Math.random() * this.#numCol)); //Generates a number in interval [0,this.#numCol-1]
 
         if ((!grid[0][randomColumn].isEmpty())) return false;   //If the first row of the chosen column is not empty, the player loses
-        else{
+        else {
             let randomNumber = Math.floor((Math.random() * 3) + 1); //Generates number in interval [1,3]
             let randomColor = Tile.getAvailableColors()[Math.floor((Math.random() * Tile.getAvailableColors().length))]; //Generates a number in interval [0,Tile.availableColors().length-1]
+            let randomShape = Tile.getAvailableShapes()[Math.floor((Math.random() * Tile.getAvailableShapes().length))];
 
             console.log(randomColumn, randomColor, randomNumber);
             //Update the first Tile object in row 1 to the randomly generated Tile properties
             grid[0][randomColumn].setColor(randomColor as Color);
             grid[0][randomColumn].setNumber(randomNumber);
-            grid[0][randomColumn].setShape("square");
+            grid[0][randomColumn].setShape(randomShape);
             grid[0][randomColumn].display();
 
             let currRow = 0;
@@ -200,7 +214,7 @@ class Grid{
                 if ((!this.moveTileDown(currRow, currCol))){
                     clearInterval(dropInterval);
                 }
-                else{
+                else {
                     this.moveTileDown(currRow, currCol);
                     this.display();
                     currRow++;
@@ -225,18 +239,19 @@ class Grid{
     }
 
     //Checks if a Tile object’s row/col values are out of bounds
-    isValidLocation(tileRow: number, tileCol: number): boolean{
-        return ((tileRow >= 0 && tileRow <= this.#numRow-1) && (tileCol >= 0 && tileCol <= this.#numCol-1));
+    isValidLocation(tileRow: number, tileCol: number): boolean {
+        return ((tileRow >= 0 && tileRow <= this.#numRow - 1) && (tileCol >= 0 && tileCol <= this.#numCol - 1));
     }
 
     //Empties (sets to default values) each Tile object
-    clear(): void{
+    clear(): void {
         var grid = this.#grid;
-        grid.forEach(function(row: Tile[]): void{   
-            row.forEach(function(tile: Tile): void{
+        grid.forEach(function (row: Tile[]): void {
+            row.forEach(function (tile: Tile): void {
                 tile.empty();
             });
         });
+        this.display();
     }
    
     //Setter Method(s)
@@ -257,4 +272,7 @@ class Grid{
         return this.#dropTime;
     }
 }
-
+/*
+When the game begins, drop a tile and when it touches the floor,
+let the cooldown begin. After the cooldown, keep dropping tile.
+*/

@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _a, _Tile_availableColors, _Tile_number, _Tile_color, _Tile_shape, _Tile_element;
+var _a, _Tile_availableColors, _Tile_availableShapes, _Tile_number, _Tile_color, _Tile_shape, _Tile_element;
 class Tile {
     //Constructor
     //Receives the Grid object to be appended with a Tile object in its default state
@@ -34,6 +34,9 @@ class Tile {
     //Primary Method
     //Displays Tile object's properties to the HTML Document
     display() {
+        for (let shape of __classPrivateFieldGet(Tile, _a, "f", _Tile_availableShapes)) {
+            __classPrivateFieldGet(this, _Tile_element, "f").classList.remove(shape);
+        }
         __classPrivateFieldGet(this, _Tile_element, "f").style.backgroundColor = __classPrivateFieldGet(this, _Tile_color, "f");
         __classPrivateFieldGet(this, _Tile_element, "f").classList.add(__classPrivateFieldGet(this, _Tile_shape, "f"));
         __classPrivateFieldGet(this, _Tile_element, "f").innerHTML = __classPrivateFieldGet(this, _Tile_number, "f").toString();
@@ -86,6 +89,9 @@ class Tile {
     static getAvailableColors() {
         return __classPrivateFieldGet(this, _a, "f", _Tile_availableColors);
     }
+    static getAvailableShapes() {
+        return __classPrivateFieldGet(this, _a, "f", _Tile_availableShapes);
+    }
     //Setter Methods
     setNumber(newNumber) {
         __classPrivateFieldSet(this, _Tile_number, newNumber, "f");
@@ -101,4 +107,6 @@ _a = Tile, _Tile_number = new WeakMap(), _Tile_color = new WeakMap(), _Tile_shap
 //Properties
 //A list of available colors to pick from (excluding the default color #000000)
 _Tile_availableColors = { value: ["#F44336", "#2196F3", "#4CAF50", "#FF9800", "#795548"] };
+//A list of available shapes to pick from
+_Tile_availableShapes = { value: ["square"] };
 //# sourceMappingURL=Tile.js.map

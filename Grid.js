@@ -12,7 +12,14 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _Grid_numRow, _Grid_numCol, _Grid_grid, _Grid_coolDown, _Grid_dropTime;
 class Grid {
-    //Constructs a 2D grid object and initializes it on call
+    /**
+     * Constructs a Grid with the given dimensions, and render it on the display
+     * @constructor
+     *
+     * @param {number} row  The number of rows for this Grid
+     * @param {number} column  The number of columns for this Grid
+     * @param {HTMLDivElement} element  The HTML div element to render this Grid on
+     */
     constructor(row, column, element) {
         //Number of rows in a Grid object
         _Grid_numRow.set(this, void 0);
@@ -33,19 +40,21 @@ class Grid {
     }
     //Initializes the 2D Grid object by creating (row * col) Tile objects
     makeGrid(row, col, element) {
-        var grid = __classPrivateFieldGet(this, _Grid_grid, "f");
         for (let r = 0; r < row; r++) {
-            grid[r] = new Array(col);
+            let rowOfTiles = [];
             for (let c = 0; c < col; c++) {
-                grid[r][c] = new Tile(element);
+                rowOfTiles.push(new Tile(element));
             }
+            __classPrivateFieldGet(this, _Grid_grid, "f").push(rowOfTiles);
+            element.appendChild(document.createElement("br"));
         }
     }
-    //Refreshes and updates each Tile object 
+    /**
+     * Updates the display to reflect the current state of its Tiles
+     */
     display() {
-        var grid = __classPrivateFieldGet(this, _Grid_grid, "f");
-        grid.forEach(function (row) {
-            row.forEach(function (tile) {
+        for (let row of __classPrivateFieldGet(this, _Grid_grid, "f")) {
+            for (let tile of row) {
                 tile.display();
             });
         });
@@ -178,11 +187,12 @@ class Grid {
         else {
             let randomNumber = Math.floor((Math.random() * 3) + 1); //Generates number in interval [1,3]
             let randomColor = Tile.getAvailableColors()[Math.floor((Math.random() * Tile.getAvailableColors().length))]; //Generates a number in interval [0,Tile.availableColors().length-1]
+            let randomShape = Tile.getAvailableShapes()[Math.floor((Math.random() * Tile.getAvailableShapes().length))];
             console.log(randomColumn, randomColor, randomNumber);
             //Update the first Tile object in row 1 to the randomly generated Tile properties
             grid[0][randomColumn].setColor(randomColor);
             grid[0][randomColumn].setNumber(randomNumber);
-            grid[0][randomColumn].setShape("square");
+            grid[0][randomColumn].setShape(randomShape);
             grid[0][randomColumn].display();
             let currRow = 0;
             let currCol = randomColumn;
@@ -223,6 +233,7 @@ class Grid {
                 tile.empty();
             });
         });
+        this.display();
     }
     //Setter Method(s)
     setCoolDown(cd) {
@@ -240,4 +251,8 @@ class Grid {
     }
 }
 _Grid_numRow = new WeakMap(), _Grid_numCol = new WeakMap(), _Grid_grid = new WeakMap(), _Grid_coolDown = new WeakMap(), _Grid_dropTime = new WeakMap();
+/*
+When the game begins, drop a tile and when it touches the floor,
+let the cooldown begin. After the cooldown, keep dropping tile.
+*/
 //# sourceMappingURL=Grid.js.map
