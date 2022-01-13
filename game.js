@@ -134,4 +134,10 @@ function gameOver() {
         localStorage.setItem("highscore", score.toString());
     }
 }
+/**
+ * Opens instructions.html in a new tab
+ */
+function openInstructions() {
+    open("instructions.html", "_blank");
+}
 //# sourceMappingURL=game.js.map
