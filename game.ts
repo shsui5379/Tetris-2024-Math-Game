@@ -40,14 +40,9 @@ function reset(): void {
         console.log("user consented to restart");
 
         grid.clear();
-        ongoing = true;
-
-        //score stuff
-        if (score > parseInt(<string>localStorage.getItem("highscore"))) {
-            localStorage.setItem("highscore", score.toString());
-        }
         score = 0;
-        displayScore(score, parseInt(<string>localStorage.getItem("highscore")));
+        gameOver();
+        startGame();
     }
 }
 
@@ -152,4 +147,5 @@ function gameOver(): void {
     if (score > parseInt(<string>localStorage.getItem("highscore"))) {
         localStorage.setItem("highscore", score.toString());
     }
+    displayScore(score, parseInt(<string>localStorage.getItem("highscore")));
 }

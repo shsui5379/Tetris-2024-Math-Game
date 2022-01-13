@@ -34,13 +34,9 @@ function reset() {
     if (confirm("Are you sure you want to start a new game?")) {
         console.log("user consented to restart");
         grid.clear();
-        ongoing = true;
-        //score stuff
-        if (score > parseInt(localStorage.getItem("highscore"))) {
-            localStorage.setItem("highscore", score.toString());
-        }
         score = 0;
-        displayScore(score, parseInt(localStorage.getItem("highscore")));
+        gameOver();
+        startGame();
     }
 }
 /**
@@ -141,5 +137,6 @@ function gameOver() {
     if (score > parseInt(localStorage.getItem("highscore"))) {
         localStorage.setItem("highscore", score.toString());
     }
+    displayScore(score, parseInt(localStorage.getItem("highscore")));
 }
 //# sourceMappingURL=game.js.map
