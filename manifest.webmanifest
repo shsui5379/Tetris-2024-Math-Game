@@ -1,1 +1,9 @@
-{}
+{
+   "name": "Game",
+   "short_name": "Game",
+   "display": "standalone",
+   "start_url": "./index.html",
+   "theme_color": "#FFCA28",
+   "background_color": "#FFCA28",
+   "description": "This game contains elements of 2048 and Tetris, with math involved"
+}
