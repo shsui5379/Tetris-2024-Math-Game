@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "workbox-cli": "^6.4.2"
   }
 }
