@@ -74,10 +74,10 @@ class Grid {
                 //If a non-empty Tile is found, check for merges
                 if (this.isValidLocation(r, temp)) {
                     //Before any merges, we will shift the found Tile to the current column
-                    if (grid[r][c].isEmpty())
+                    if (grid[r][c].isEmpty() && !grid[r][temp].isDropping())
                         grid[r][c].swap(grid[r][temp]);
                     if (this.isValidLocation(r, c + 1)) {
-                        if (condition.check(grid[r][c], grid[r][c + 1])) {
+                        if (condition.check(grid[r][c], grid[r][c + 1]) && !grid[r][c].isDropping() && !grid[r][c + 1].isDropping()) {
                             console.log("CONDITION VERIIED");
                             grid[r][c + 1].merge(grid[r][c]);
                             //Merging will leave a gap, so check this column again for more merges
@@ -104,11 +104,11 @@ class Grid {
                 //If a non-empty Tile is found, check for merges
                 if (this.isValidLocation(temp, c)) {
                     //Before any merges, we will shift the found Tile to the current row
-                    if (grid[r][c].isEmpty())
+                    if (grid[r][c].isEmpty() && !grid[temp][c].isDropping())
                         grid[r][c].swap(grid[temp][c]);
                     //Check for a merge
                     if (this.isValidLocation(r + 1, c)) {
-                        if (condition.check(grid[r][c], grid[r + 1][c])) {
+                        if (condition.check(grid[r][c], grid[r + 1][c]) && !grid[r][c].isDropping() && !grid[r + 1][c].isDropping()) {
                             grid[r + 1][c].merge(grid[r][c]);
                             //Merging will leave a gap, so check this column again for more merges
                             r++;
@@ -134,10 +134,10 @@ class Grid {
                 //If a non-empty Tile is found, check for merges
                 if (this.isValidLocation(r, temp)) {
                     //Before any merges, we will shift the found Tile to the current column
-                    if (grid[r][c].isEmpty())
+                    if (grid[r][c].isEmpty() && !grid[r][temp].isDropping())
                         grid[r][c].swap(grid[r][temp]);
                     if (this.isValidLocation(r, c - 1)) {
-                        if (condition.check(grid[r][c], grid[r][c - 1])) {
+                        if (condition.check(grid[r][c], grid[r][c - 1]) && !grid[r][c].isDropping() && !grid[r][c - 1].isDropping()) {
                             grid[r][c - 1].merge(grid[r][c]);
                             //Merging will leave a gap, so check this column again for more merges
                             c--;
@@ -193,6 +193,7 @@ class Grid {
             grid[0][randomColumn].setColor(randomColor);
             grid[0][randomColumn].setNumber(randomNumber);
             grid[0][randomColumn].setShape(randomShape);
+            grid[0][randomColumn].setDropping(true);
             grid[0][randomColumn].display();
             let currRow = 0;
             let currCol = randomColumn;
@@ -200,6 +201,7 @@ class Grid {
             let dropInterval = setInterval(() => {
                 if ((!this.moveTileDown(currRow, currCol))) {
                     clearInterval(dropInterval);
+                    grid[0][randomColumn].setDropping(false);
                 }
                 else {
                     this.moveTileDown(currRow, currCol);

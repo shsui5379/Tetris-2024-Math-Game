@@ -204,6 +204,7 @@ class Grid {
             grid[0][randomColumn].setColor(randomColor as Color);
             grid[0][randomColumn].setNumber(randomNumber);
             grid[0][randomColumn].setShape(randomShape);
+            grid[0][randomColumn].setDropping(true);
             grid[0][randomColumn].display();
 
             let currRow = 0;
@@ -213,6 +214,7 @@ class Grid {
             let dropInterval = setInterval(() => {
                 if ((!this.moveTileDown(currRow, currCol))) {
                     clearInterval(dropInterval);
+                    grid[0][randomColumn].setDropping(false);
                 }
                 else {
                     this.moveTileDown(currRow, currCol);
