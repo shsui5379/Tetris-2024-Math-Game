@@ -22,6 +22,12 @@
    <meta name="theme-color" content="#FFCA28" />
    <meta name="battery-savings" content="allow-reduced-framerate allow-reduced-script-speed" />
    <meta name="description" content="This game contains elements of 2048 and Tetris, with math involved" />
+
+   <script>
+      if ("serviceWorker" in navigator) {
+         navigator.serviceWorker.register("./sw.js");
+      }
+   </script>
 </head>
 
 <body onload="initializeGame();" onkeydown="keyHandler(event);">
