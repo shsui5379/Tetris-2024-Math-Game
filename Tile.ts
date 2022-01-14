@@ -64,6 +64,7 @@ class Tile {
         this.#number = "";
         this.#color = "#000000";
         this.#shape = "square";
+        this.#dropping = false;
     }
 
     //Merges a Tile object with another Tile object
@@ -83,14 +84,17 @@ class Tile {
         var thisTileColor = this.getColor();
         var thisTileShape = this.getShape();
         var thisTileNumber = this.getNumber();
+        var thisTileDropping = this.isDropping();
 
         this.setColor(other.getColor());
         this.setShape(other.getShape());
         this.setNumber(other.getNumber());
+        this.setDropping(other.isDropping());
 
         other.setColor(thisTileColor);
         other.setShape(thisTileShape);
         other.setNumber(thisTileNumber);
+        other.setDropping(thisTileDropping);
     }
 
     //Getter Methods
