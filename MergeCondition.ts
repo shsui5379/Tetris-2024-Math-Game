@@ -4,7 +4,14 @@ interface MergeCondition{
     randomizeParameters(): void;
 }
 
-var possibleConditions: MergeCondition[] = [];
+var possibleConditions: MergeCondition[] = [{
+    check(tile1: Tile, tile2: Tile): boolean{
+        return ((tile1.getNumber() || 0) + (tile2.getNumber() || 0 ) < 10);
+    },
+    toString(): string{ return ""},
+    randomizeParameters(): void {return}
+}];
+
 class SumToPrimeNumber implements MergeCondition {
   #value: number;
   #parity: string;
@@ -21,8 +28,8 @@ class SumToPrimeNumber implements MergeCondition {
 
   someHelperMethod(): number { /* implement */ return -1;}
 }
-possibleConditions.push(new SumToPrimeNumber());
+//possibleConditions.push(new SumToPrimeNumber());
 
 //Test
-console.log(possibleConditions[0]);
+//console.log(possibleConditions[0]);
 

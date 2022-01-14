@@ -6,7 +6,13 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _SumToPrimeNumber_value, _SumToPrimeNumber_parity;
-var possibleConditions = [];
+var possibleConditions = [{
+        check(tile1, tile2) {
+            return ((tile1.getNumber() || 0) + (tile2.getNumber() || 0) < 10);
+        },
+        toString() { return ""; },
+        randomizeParameters() { return; }
+    }];
 class SumToPrimeNumber {
     constructor() {
         _SumToPrimeNumber_value.set(this, void 0);
@@ -23,7 +29,7 @@ class SumToPrimeNumber {
     someHelperMethod() { /* implement */ return -1; }
 }
 _SumToPrimeNumber_value = new WeakMap(), _SumToPrimeNumber_parity = new WeakMap();
-possibleConditions.push(new SumToPrimeNumber());
+//possibleConditions.push(new SumToPrimeNumber());
 //Test
-console.log(possibleConditions[0]);
+//console.log(possibleConditions[0]);
 //# sourceMappingURL=MergeCondition.js.map

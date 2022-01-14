@@ -63,11 +63,15 @@ class Tile {
     }
 
     //Merges a Tile object with another Tile object
-    public merge(other: Tile) {
+    public merge(other: Tile): void{
+        var thisEmpty = this.isEmpty();
+        var otherEmpty = other.isEmpty();
         var newNumber = (this.#number || 0) + (other.getNumber() || 0);
-        this.setNumber(newNumber);
 
-        other.empty();
+        if (!thisEmpty && !otherEmpty){
+            other.empty();
+            this.setNumber(newNumber);
+        }
     }
 
     //Swaps the properties of a Tile object with another Tile object

@@ -1,5 +1,5 @@
 "use strict";
-let currentCondition;
+let currentCondition; //Testing
 let grid;
 let score;
 let ongoing;
@@ -24,6 +24,7 @@ function initializeGame() {
 function startGame() {
     score = 0;
     ongoing = true;
+    changeCondition();
     configureDropInterval();
 }
 /**
@@ -33,13 +34,9 @@ function reset() {
     if (confirm("Are you sure you want to start a new game?")) {
         console.log("user consented to restart");
         grid.clear();
-        ongoing = true;
-        //score stuff
-        if (score > parseInt(localStorage.getItem("highscore"))) {
-            localStorage.setItem("highscore", score.toString());
-        }
         score = 0;
-        displayScore(score, parseInt(localStorage.getItem("highscore")));
+        gameOver();
+        startGame();
     }
 }
 /**
@@ -50,12 +47,15 @@ function keyHandler(e) {
     if (ongoing) {
         if (e.key == "ArrowDown") {
             console.log("down key pressed");
+            grid.mergeTilesDown(currentCondition);
         }
         else if (e.key == "ArrowLeft") {
             console.log("left key pressed");
+            grid.mergeTilesLeft(currentCondition);
         }
         else if (e.key == "ArrowRight") {
             console.log("right key pressed");
+            grid.mergeTilesRight(currentCondition);
         }
     }
 }
@@ -75,14 +75,17 @@ function swipeHandler(e) {
             if (Math.abs(xDiff) > Math.abs(yDiff)) { //horizontal swipe
                 if (xDiff > 0) {
                     console.log("swiped right");
+                    grid.mergeTilesRight(currentCondition);
                 }
                 else {
                     console.log("swiped left");
+                    grid.mergeTilesLeft(currentCondition);
                 }
             }
             else {
                 if (yDiff > 0) {
                     console.log("swiped down");
+                    grid.mergeTilesDown(currentCondition);
                 }
             }
         }
@@ -92,6 +95,7 @@ function swipeHandler(e) {
  * Changes the current merge condition
  */
 function changeCondition() {
+    currentCondition = possibleConditions[Math.floor(Math.random() * possibleConditions.length)];
     printOnMessageBoard(currentCondition.toString());
 }
 /**
@@ -133,6 +137,7 @@ function gameOver() {
     if (score > parseInt(localStorage.getItem("highscore"))) {
         localStorage.setItem("highscore", score.toString());
     }
+    displayScore(score, parseInt(localStorage.getItem("highscore")));
 }
 /**
  * Opens instructions.html in a new tab
