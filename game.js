@@ -125,6 +125,7 @@ function configureDropInterval() {
 function dropInterval(delay) {
     currentTimeout = setTimeout(() => {
         delay = grid.dropRandomNumber();
+        changeCondition();
         if (delay === false) {
             gameOver();
         }
