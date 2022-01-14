@@ -201,7 +201,7 @@ class Grid {
             let dropInterval = setInterval(() => {
                 if ((!this.moveTileDown(currRow, currCol))) {
                     clearInterval(dropInterval);
-                    grid[0][randomColumn].setDropping(false);
+                    grid[currRow - 1][currCol].setDropping(false);
                 }
                 else {
                     this.moveTileDown(currRow, currCol);
