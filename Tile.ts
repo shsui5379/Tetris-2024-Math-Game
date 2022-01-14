@@ -20,6 +20,9 @@ class Tile {
     //The shape for a Tile object
     #shape: Shape;
 
+    //whether this Tile is currently dropping
+    #dropping: boolean;
+
     //The HTMLDivElement that represents the Tile object
     #element: HTMLDivElement;
 
@@ -31,6 +34,7 @@ class Tile {
         this.#number = "";
         this.#color = "#000000";
         this.#shape = "square";
+        this.#dropping = false;
 
         this.#element.classList.add("tile");
 
@@ -63,12 +67,12 @@ class Tile {
     }
 
     //Merges a Tile object with another Tile object
-    public merge(other: Tile): void{
+    public merge(other: Tile): void {
         var thisEmpty = this.isEmpty();
         var otherEmpty = other.isEmpty();
         var newNumber = (this.#number || 0) + (other.getNumber() || 0);
 
-        if (!thisEmpty && !otherEmpty){
+        if (!thisEmpty && !otherEmpty) {
             other.empty();
             this.setNumber(newNumber);
         }
@@ -102,6 +106,10 @@ class Tile {
         return this.#shape;
     }
 
+    public isDropping(): boolean {
+        return this.#dropping;
+    }
+
     public getDivElement(): HTMLDivElement {
         return this.#element;
     }
@@ -125,6 +133,10 @@ class Tile {
 
     public setShape(newShape: Shape): void {
         this.#shape = newShape;
+    }
+
+    public setDropping(state: boolean): void {
+        this.#dropping = state;
     }
 }
 

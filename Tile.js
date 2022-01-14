@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _a, _Tile_availableColors, _Tile_availableShapes, _Tile_number, _Tile_color, _Tile_shape, _Tile_element;
+var _a, _Tile_availableColors, _Tile_availableShapes, _Tile_number, _Tile_color, _Tile_shape, _Tile_dropping, _Tile_element;
 class Tile {
     //Constructor
     //Receives the Grid object to be appended with a Tile object in its default state
@@ -21,12 +21,15 @@ class Tile {
         _Tile_color.set(this, void 0);
         //The shape for a Tile object
         _Tile_shape.set(this, void 0);
+        //whether this Tile is currently dropping
+        _Tile_dropping.set(this, void 0);
         //The HTMLDivElement that represents the Tile object
         _Tile_element.set(this, void 0);
         __classPrivateFieldSet(this, _Tile_element, document.createElement("div"), "f");
         __classPrivateFieldSet(this, _Tile_number, "", "f");
         __classPrivateFieldSet(this, _Tile_color, "#000000", "f");
         __classPrivateFieldSet(this, _Tile_shape, "square", "f");
+        __classPrivateFieldSet(this, _Tile_dropping, false, "f");
         __classPrivateFieldGet(this, _Tile_element, "f").classList.add("tile");
         this.display();
         parentGridElement.appendChild(__classPrivateFieldGet(this, _Tile_element, "f"));
@@ -83,6 +86,9 @@ class Tile {
     getShape() {
         return __classPrivateFieldGet(this, _Tile_shape, "f");
     }
+    isDropping() {
+        return __classPrivateFieldGet(this, _Tile_dropping, "f");
+    }
     getDivElement() {
         return __classPrivateFieldGet(this, _Tile_element, "f");
     }
@@ -102,8 +108,11 @@ class Tile {
     setShape(newShape) {
         __classPrivateFieldSet(this, _Tile_shape, newShape, "f");
     }
+    setDropping(state) {
+        __classPrivateFieldSet(this, _Tile_dropping, state, "f");
+    }
 }
-_a = Tile, _Tile_number = new WeakMap(), _Tile_color = new WeakMap(), _Tile_shape = new WeakMap(), _Tile_element = new WeakMap();
+_a = Tile, _Tile_number = new WeakMap(), _Tile_color = new WeakMap(), _Tile_shape = new WeakMap(), _Tile_dropping = new WeakMap(), _Tile_element = new WeakMap();
 //Properties
 //A list of available colors to pick from (excluding the default color #000000)
 _Tile_availableColors = { value: ["#F44336", "#2196F3", "#4CAF50", "#FF9800", "#795548"] };
