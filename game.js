@@ -3,6 +3,7 @@ let currentCondition; //Testing
 let grid;
 let score;
 let ongoing;
+let currentTimeout;
 let touchX;
 let touchY;
 /**
@@ -33,6 +34,7 @@ function startGame() {
 function reset() {
     if (confirm("Are you sure you want to start a new game?")) {
         console.log("user consented to restart");
+        clearTimeout(currentTimeout);
         grid.clear();
         score = 0;
         gameOver();
@@ -121,7 +123,7 @@ function configureDropInterval() {
     dropInterval(delay);
 }
 function dropInterval(delay) {
-    setTimeout(() => {
+    currentTimeout = setTimeout(() => {
         delay = grid.dropRandomNumber();
         if (delay === false) {
             gameOver();
