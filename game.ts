@@ -2,6 +2,7 @@ let currentCondition: MergeCondition; //Testing
 let grid: Grid;
 let score: number;
 let ongoing: boolean;
+let currentTimeout: NodeJS.Timeout;
 
 let touchX: number;
 let touchY: number;
@@ -39,15 +40,11 @@ function reset(): void {
     if (confirm("Are you sure you want to start a new game?")) {
         console.log("user consented to restart");
 
+        clearTimeout(currentTimeout);
         grid.clear();
-        ongoing = true;
-
-        //score stuff
-        if (score > parseInt(<string>localStorage.getItem("highscore"))) {
-            localStorage.setItem("highscore", score.toString());
-        }
         score = 0;
-        displayScore(score, parseInt(<string>localStorage.getItem("highscore")));
+        gameOver();
+        startGame();
     }
 }
 
@@ -135,8 +132,9 @@ function configureDropInterval(): void {
 }
 
 function dropInterval(delay: number | boolean): void {
-    setTimeout(() => {
+    currentTimeout = setTimeout(() => {
         delay = grid.dropRandomNumber();
+        changeCondition();
         if (delay === false) {
             gameOver();
         }
@@ -152,4 +150,5 @@ function gameOver(): void {
     if (score > parseInt(<string>localStorage.getItem("highscore"))) {
         localStorage.setItem("highscore", score.toString());
     }
+    displayScore(score, parseInt(<string>localStorage.getItem("highscore")));
 }
