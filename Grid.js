@@ -68,7 +68,7 @@ class Grid {
         for (let r = 0; r <= rows; r++) {
             for (let c = cols; c >= 0; c--) {
                 let temp = c;
-                while (this.isValidLocation(r, temp) && grid[r][temp].isEmpty()) {
+                while (this.isValidLocation(r, temp) && (grid[r][temp].isEmpty() || grid[r][temp].isDropping())) {
                     temp--;
                 }
                 //If a non-empty Tile is found, check for merges
@@ -98,7 +98,7 @@ class Grid {
         for (let c = 0; c <= cols; c++) {
             for (let r = rows; r >= 0; r--) {
                 let temp = r;
-                while (this.isValidLocation(temp, c) && grid[temp][c].isEmpty()) {
+                while (this.isValidLocation(temp, c) && (grid[temp][c].isEmpty() || grid[temp][c].isDropping())) {
                     temp--;
                 }
                 //If a non-empty Tile is found, check for merges
@@ -128,7 +128,7 @@ class Grid {
         for (let r = 0; r <= rows; r++) {
             for (let c = 0; c <= cols; c++) {
                 let temp = c;
-                while (this.isValidLocation(r, temp) && grid[r][temp].isEmpty()) {
+                while (this.isValidLocation(r, temp) && (grid[r][temp].isEmpty() || grid[r][temp].isDropping())) {
                     temp++;
                 }
                 //If a non-empty Tile is found, check for merges
@@ -156,9 +156,11 @@ class Grid {
         var c = __classPrivateFieldGet(this, _Grid_numCol, "f") - 1;
         for (let col = 0; col <= c; col++) {
             for (let row = r; row >= 0; row--) {
-                let tempRow = row;
-                while (this.moveTileDown(tempRow, col)) {
-                    tempRow++;
+                if (!__classPrivateFieldGet(this, _Grid_grid, "f")[row][col].isDropping()) {
+                    let tempRow = row;
+                    while (this.moveTileDown(tempRow, col)) {
+                        tempRow++;
+                    }
                 }
             }
         }
@@ -201,7 +203,7 @@ class Grid {
             let dropInterval = setInterval(() => {
                 if ((!this.moveTileDown(currRow, currCol))) {
                     clearInterval(dropInterval);
-                    grid[currRow - 1][currCol].setDropping(false);
+                    grid[currRow][currCol].setDropping(false);
                 }
                 else {
                     this.moveTileDown(currRow, currCol);
@@ -256,5 +258,5 @@ _Grid_numRow = new WeakMap(), _Grid_numCol = new WeakMap(), _Grid_grid = new Wea
 /*
 When the game begins, drop a tile and when it touches the floor,
 let the cooldown begin. After the cooldown, keep dropping tile.
-*/
+*/ 
 //# sourceMappingURL=Grid.js.map

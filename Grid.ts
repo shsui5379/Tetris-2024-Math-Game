@@ -68,16 +68,16 @@ class Grid {
         for (let r = 0; r <= rows; r++) {
             for (let c = cols; c >= 0; c--) {
                 let temp = c;
-                while (this.isValidLocation(r, temp) && grid[r][temp].isEmpty()) {
+                while (this.isValidLocation(r, temp) && (grid[r][temp].isEmpty() || grid[r][temp].isDropping())) {
                     temp--;
                 }
 
                 //If a non-empty Tile is found, check for merges
                 if (this.isValidLocation(r, temp)) {
                     //Before any merges, we will shift the found Tile to the current column
-                    if (grid[r][c].isEmpty()) grid[r][c].swap(grid[r][temp]);
+                    if (grid[r][c].isEmpty() && !grid[r][temp].isDropping()) grid[r][c].swap(grid[r][temp]);
                     if (this.isValidLocation(r, c + 1)) {
-                        if (condition.check(grid[r][c], grid[r][c + 1])) {
+                        if (condition.check(grid[r][c], grid[r][c + 1]) && !grid[r][c].isDropping() && !grid[r][c + 1].isDropping()) {
                             console.log("CONDITION VERIIED");
                             grid[r][c + 1].merge(grid[r][c]);
 
@@ -101,18 +101,18 @@ class Grid {
         for (let c = 0; c <= cols; c++) {
             for (let r = rows; r >= 0; r--) {
                 let temp = r;
-                while (this.isValidLocation(temp, c) && grid[temp][c].isEmpty()) {
+                while (this.isValidLocation(temp, c) && (grid[temp][c].isEmpty() || grid[temp][c].isDropping())) {
                     temp--;
                 }
 
                 //If a non-empty Tile is found, check for merges
                 if (this.isValidLocation(temp, c)) {
                     //Before any merges, we will shift the found Tile to the current row
-                    if (grid[r][c].isEmpty()) grid[r][c].swap(grid[temp][c]);
+                    if (grid[r][c].isEmpty() && !grid[temp][c].isDropping()) grid[r][c].swap(grid[temp][c]);
 
                     //Check for a merge
                     if (this.isValidLocation(r + 1, c)) {
-                        if (condition.check(grid[r][c], grid[r + 1][c])) {
+                        if (condition.check(grid[r][c], grid[r + 1][c]) && !grid[r][c].isDropping() && !grid[r + 1][c].isDropping()) {
                             grid[r + 1][c].merge(grid[r][c]);
 
                             //Merging will leave a gap, so check this column again for more merges
@@ -135,16 +135,16 @@ class Grid {
         for (let r = 0; r <= rows; r++) {
             for (let c = 0; c <= cols; c++) {
                 let temp = c;
-                while (this.isValidLocation(r, temp) && grid[r][temp].isEmpty()) {
+                while (this.isValidLocation(r, temp) && (grid[r][temp].isEmpty() || grid[r][temp].isDropping())) {
                     temp++;
                 }
 
                 //If a non-empty Tile is found, check for merges
                 if (this.isValidLocation(r, temp)) {
                     //Before any merges, we will shift the found Tile to the current column
-                    if (grid[r][c].isEmpty()) grid[r][c].swap(grid[r][temp]);
+                    if (grid[r][c].isEmpty() && !grid[r][temp].isDropping()) grid[r][c].swap(grid[r][temp]);
                     if (this.isValidLocation(r, c - 1)) {
-                        if (condition.check(grid[r][c], grid[r][c - 1])) {
+                        if (condition.check(grid[r][c], grid[r][c - 1]) && !grid[r][c].isDropping() && !grid[r][c - 1].isDropping()) {
                             grid[r][c - 1].merge(grid[r][c]);
 
                             //Merging will leave a gap, so check this column again for more merges
@@ -165,9 +165,11 @@ class Grid {
         var c = this.#numCol - 1;
         for (let col = 0; col <= c; col++) {
             for (let row = r; row >= 0; row--) {
-                let tempRow = row;
-                while (this.moveTileDown(tempRow, col)) {
-                    tempRow++;
+                if (!this.#grid[row][col].isDropping()) {
+                    let tempRow = row;
+                    while (this.moveTileDown(tempRow, col)) {
+                        tempRow++;
+                    }
                 }
             }
         }
@@ -214,7 +216,7 @@ class Grid {
             let dropInterval = setInterval(() => {
                 if ((!this.moveTileDown(currRow, currCol))) {
                     clearInterval(dropInterval);
-                    grid[currRow - 1][currCol].setDropping(false);
+                    grid[currRow][currCol].setDropping(false);
                 }
                 else {
                     this.moveTileDown(currRow, currCol);
