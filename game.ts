@@ -152,3 +152,10 @@ function gameOver(): void {
     }
     displayScore(score, parseInt(<string>localStorage.getItem("highscore")));
 }
+
+/**
+ * Opens instructions.html in a new tab
+ */
+function openInstructions() {
+    open("instructions.html", "_blank");
+}
