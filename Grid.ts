@@ -59,11 +59,12 @@ class Grid {
     }
 
     //Receives user inputs in the form of arrow keys to move Tiles
-    mergeTilesRight(condition: MergeCondition) {
+    mergeTilesRight(condition: MergeCondition): number {
         console.log("ATTEMPTING TO MERGE RIGHT");
         var grid = this.#grid;
         var rows = this.#numRow - 1;
         var cols = this.#numCol - 1;
+        let counter = 0;
 
         for (let r = 0; r <= rows; r++) {
             for (let c = cols; c >= 0; c--) {
@@ -80,6 +81,7 @@ class Grid {
                         if (condition.check(grid[r][c], grid[r][c + 1]) && !grid[r][c].isDropping() && !grid[r][c + 1].isDropping()) {
                             console.log("CONDITION VERIIED");
                             grid[r][c + 1].merge(grid[r][c]);
+                            counter++;
 
                             //Merging will leave a gap, so check this column again for more merges
                             c++;
@@ -90,13 +92,16 @@ class Grid {
         }
         this.dropColumn();
         this.display();
+
+        return counter;
     }
 
-    mergeTilesDown(condition: MergeCondition) {
+    mergeTilesDown(condition: MergeCondition): number {
         console.log("ATTEMPTING TO MERGE DOWN");
         var grid = this.#grid;
         var rows = this.#numRow - 1;
         var cols = this.#numCol - 1;
+        let counter = 0;
 
         for (let c = 0; c <= cols; c++) {
             for (let r = rows; r >= 0; r--) {
@@ -114,6 +119,7 @@ class Grid {
                     if (this.isValidLocation(r + 1, c)) {
                         if (condition.check(grid[r][c], grid[r + 1][c]) && !grid[r][c].isDropping() && !grid[r + 1][c].isDropping()) {
                             grid[r + 1][c].merge(grid[r][c]);
+                            counter++;
 
                             //Merging will leave a gap, so check this column again for more merges
                             r++;
@@ -124,13 +130,16 @@ class Grid {
         }
         this.dropColumn();
         this.display();
+
+        return counter;
     }
 
-    mergeTilesLeft(condition: MergeCondition) {
+    mergeTilesLeft(condition: MergeCondition): number {
         console.log("ATTEMPTING TO MERGE LEFT");
         var grid = this.#grid;
         var rows = this.#numRow - 1;
         var cols = this.#numCol - 1;
+        let counter = 0;
 
         for (let r = 0; r <= rows; r++) {
             for (let c = 0; c <= cols; c++) {
@@ -146,6 +155,7 @@ class Grid {
                     if (this.isValidLocation(r, c - 1)) {
                         if (condition.check(grid[r][c], grid[r][c - 1]) && !grid[r][c].isDropping() && !grid[r][c - 1].isDropping()) {
                             grid[r][c - 1].merge(grid[r][c]);
+                            counter++;
 
                             //Merging will leave a gap, so check this column again for more merges
                             c--;
@@ -156,6 +166,8 @@ class Grid {
         }
         this.dropColumn();
         this.display();
+
+        return counter;
     }
 
     //Gravity effect when Tiles are merged
