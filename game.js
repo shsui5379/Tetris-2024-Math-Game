@@ -3,6 +3,7 @@ let currentCondition; //Testing
 let grid;
 let score;
 let ongoing;
+let currentTimeout;
 let touchX;
 let touchY;
 /**
@@ -33,6 +34,7 @@ function startGame() {
 function reset() {
     if (confirm("Are you sure you want to start a new game?")) {
         console.log("user consented to restart");
+        clearTimeout(currentTimeout);
         grid.clear();
         score = 0;
         gameOver();
@@ -121,8 +123,9 @@ function configureDropInterval() {
     dropInterval(delay);
 }
 function dropInterval(delay) {
-    setTimeout(() => {
+    currentTimeout = setTimeout(() => {
         delay = grid.dropRandomNumber();
+        changeCondition();
         if (delay === false) {
             gameOver();
         }
@@ -138,5 +141,11 @@ function gameOver() {
         localStorage.setItem("highscore", score.toString());
     }
     displayScore(score, parseInt(localStorage.getItem("highscore")));
+}
+/**
+ * Opens instructions.html in a new tab
+ */
+function openInstructions() {
+    open("instructions.html", "_blank");
 }
 //# sourceMappingURL=game.js.map
