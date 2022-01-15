@@ -65,21 +65,23 @@ class Grid {
         var grid = __classPrivateFieldGet(this, _Grid_grid, "f");
         var rows = __classPrivateFieldGet(this, _Grid_numRow, "f") - 1;
         var cols = __classPrivateFieldGet(this, _Grid_numCol, "f") - 1;
+        let counter = 0;
         for (let r = 0; r <= rows; r++) {
             for (let c = cols; c >= 0; c--) {
                 let temp = c;
-                while (this.isValidLocation(r, temp) && grid[r][temp].isEmpty()) {
+                while (this.isValidLocation(r, temp) && (grid[r][temp].isEmpty() || grid[r][temp].isDropping())) {
                     temp--;
                 }
                 //If a non-empty Tile is found, check for merges
                 if (this.isValidLocation(r, temp)) {
                     //Before any merges, we will shift the found Tile to the current column
-                    if (grid[r][c].isEmpty())
+                    if (grid[r][c].isEmpty() && !grid[r][temp].isDropping())
                         grid[r][c].swap(grid[r][temp]);
                     if (this.isValidLocation(r, c + 1)) {
-                        if (condition.check(grid[r][c], grid[r][c + 1])) {
+                        if (condition.check(grid[r][c], grid[r][c + 1]) && !grid[r][c].isDropping() && !grid[r][c + 1].isDropping()) {
                             console.log("CONDITION VERIIED");
                             grid[r][c + 1].merge(grid[r][c]);
+                            counter++;
                             //Merging will leave a gap, so check this column again for more merges
                             c++;
                         }
@@ -89,27 +91,30 @@ class Grid {
         }
         this.dropColumn();
         this.display();
+        return counter;
     }
     mergeTilesDown(condition) {
         console.log("ATTEMPTING TO MERGE DOWN");
         var grid = __classPrivateFieldGet(this, _Grid_grid, "f");
         var rows = __classPrivateFieldGet(this, _Grid_numRow, "f") - 1;
         var cols = __classPrivateFieldGet(this, _Grid_numCol, "f") - 1;
+        let counter = 0;
         for (let c = 0; c <= cols; c++) {
             for (let r = rows; r >= 0; r--) {
                 let temp = r;
-                while (this.isValidLocation(temp, c) && grid[temp][c].isEmpty()) {
+                while (this.isValidLocation(temp, c) && (grid[temp][c].isEmpty() || grid[temp][c].isDropping())) {
                     temp--;
                 }
                 //If a non-empty Tile is found, check for merges
                 if (this.isValidLocation(temp, c)) {
                     //Before any merges, we will shift the found Tile to the current row
-                    if (grid[r][c].isEmpty())
+                    if (grid[r][c].isEmpty() && !grid[temp][c].isDropping())
                         grid[r][c].swap(grid[temp][c]);
                     //Check for a merge
                     if (this.isValidLocation(r + 1, c)) {
-                        if (condition.check(grid[r][c], grid[r + 1][c])) {
+                        if (condition.check(grid[r][c], grid[r + 1][c]) && !grid[r][c].isDropping() && !grid[r + 1][c].isDropping()) {
                             grid[r + 1][c].merge(grid[r][c]);
+                            counter++;
                             //Merging will leave a gap, so check this column again for more merges
                             r++;
                         }
@@ -119,26 +124,29 @@ class Grid {
         }
         this.dropColumn();
         this.display();
+        return counter;
     }
     mergeTilesLeft(condition) {
         console.log("ATTEMPTING TO MERGE LEFT");
         var grid = __classPrivateFieldGet(this, _Grid_grid, "f");
         var rows = __classPrivateFieldGet(this, _Grid_numRow, "f") - 1;
         var cols = __classPrivateFieldGet(this, _Grid_numCol, "f") - 1;
+        let counter = 0;
         for (let r = 0; r <= rows; r++) {
             for (let c = 0; c <= cols; c++) {
                 let temp = c;
-                while (this.isValidLocation(r, temp) && grid[r][temp].isEmpty()) {
+                while (this.isValidLocation(r, temp) && (grid[r][temp].isEmpty() || grid[r][temp].isDropping())) {
                     temp++;
                 }
                 //If a non-empty Tile is found, check for merges
                 if (this.isValidLocation(r, temp)) {
                     //Before any merges, we will shift the found Tile to the current column
-                    if (grid[r][c].isEmpty())
+                    if (grid[r][c].isEmpty() && !grid[r][temp].isDropping())
                         grid[r][c].swap(grid[r][temp]);
                     if (this.isValidLocation(r, c - 1)) {
-                        if (condition.check(grid[r][c], grid[r][c - 1])) {
+                        if (condition.check(grid[r][c], grid[r][c - 1]) && !grid[r][c].isDropping() && !grid[r][c - 1].isDropping()) {
                             grid[r][c - 1].merge(grid[r][c]);
+                            counter++;
                             //Merging will leave a gap, so check this column again for more merges
                             c--;
                         }
@@ -148,6 +156,7 @@ class Grid {
         }
         this.dropColumn();
         this.display();
+        return counter;
     }
     //Gravity effect when Tiles are merged
     dropColumn() {
@@ -156,9 +165,11 @@ class Grid {
         var c = __classPrivateFieldGet(this, _Grid_numCol, "f") - 1;
         for (let col = 0; col <= c; col++) {
             for (let row = r; row >= 0; row--) {
-                let tempRow = row;
-                while (this.moveTileDown(tempRow, col)) {
-                    tempRow++;
+                if (!__classPrivateFieldGet(this, _Grid_grid, "f")[row][col].isDropping()) {
+                    let tempRow = row;
+                    while (this.moveTileDown(tempRow, col)) {
+                        tempRow++;
+                    }
                 }
             }
         }
@@ -193,6 +204,7 @@ class Grid {
             grid[0][randomColumn].setColor(randomColor);
             grid[0][randomColumn].setNumber(randomNumber);
             grid[0][randomColumn].setShape(randomShape);
+            grid[0][randomColumn].setDropping(true);
             grid[0][randomColumn].display();
             let currRow = 0;
             let currCol = randomColumn;
@@ -200,6 +212,7 @@ class Grid {
             let dropInterval = setInterval(() => {
                 if ((!this.moveTileDown(currRow, currCol))) {
                     clearInterval(dropInterval);
+                    grid[currRow][currCol].setDropping(false);
                 }
                 else {
                     this.moveTileDown(currRow, currCol);
@@ -254,5 +267,5 @@ _Grid_numRow = new WeakMap(), _Grid_numCol = new WeakMap(), _Grid_grid = new Wea
 /*
 When the game begins, drop a tile and when it touches the floor,
 let the cooldown begin. After the cooldown, keep dropping tile.
-*/
+*/ 
 //# sourceMappingURL=Grid.js.map

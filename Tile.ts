@@ -20,6 +20,9 @@ class Tile {
     //The shape for a Tile object
     #shape: Shape;
 
+    //whether this Tile is currently dropping
+    #dropping: boolean;
+
     //The HTMLDivElement that represents the Tile object
     #element: HTMLDivElement;
 
@@ -31,6 +34,7 @@ class Tile {
         this.#number = "";
         this.#color = "#000000";
         this.#shape = "square";
+        this.#dropping = false;
 
         this.#element.classList.add("tile");
 
@@ -60,15 +64,16 @@ class Tile {
         this.#number = "";
         this.#color = "#000000";
         this.#shape = "square";
+        this.#dropping = false;
     }
 
     //Merges a Tile object with another Tile object
-    public merge(other: Tile): void{
+    public merge(other: Tile): void {
         var thisEmpty = this.isEmpty();
         var otherEmpty = other.isEmpty();
         var newNumber = (this.#number || 0) + (other.getNumber() || 0);
 
-        if (!thisEmpty && !otherEmpty){
+        if (!thisEmpty && !otherEmpty) {
             other.empty();
             this.setNumber(newNumber);
         }
@@ -79,14 +84,17 @@ class Tile {
         var thisTileColor = this.getColor();
         var thisTileShape = this.getShape();
         var thisTileNumber = this.getNumber();
+        var thisTileDropping = this.isDropping();
 
         this.setColor(other.getColor());
         this.setShape(other.getShape());
         this.setNumber(other.getNumber());
+        this.setDropping(other.isDropping());
 
         other.setColor(thisTileColor);
         other.setShape(thisTileShape);
         other.setNumber(thisTileNumber);
+        other.setDropping(thisTileDropping);
     }
 
     //Getter Methods
@@ -100,6 +108,10 @@ class Tile {
 
     public getShape(): Shape {
         return this.#shape;
+    }
+
+    public isDropping(): boolean {
+        return this.#dropping;
     }
 
     public getDivElement(): HTMLDivElement {
@@ -125,6 +137,10 @@ class Tile {
 
     public setShape(newShape: Shape): void {
         this.#shape = newShape;
+    }
+
+    public setDropping(state: boolean): void {
+        this.#dropping = state;
     }
 }
 
