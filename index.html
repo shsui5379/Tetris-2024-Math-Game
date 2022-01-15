@@ -27,6 +27,12 @@
       if ("serviceWorker" in navigator) {
          navigator.serviceWorker.register("./sw.js");
       }
+
+      window.addEventListener('beforeunload', function (e) {
+         e.preventDefault();
+         e.returnValue = "Do you want to end the game?";
+         return "Do you want to end the game?";
+      });
    </script>
 </head>
 
