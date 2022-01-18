@@ -1,4 +1,4 @@
-let currentCondition: MergeCondition; //Testing
+let currentCondition: MergeCondition;
 let grid: Grid;
 let score: number;
 let ongoing: boolean;
