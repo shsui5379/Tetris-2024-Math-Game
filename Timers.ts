@@ -86,7 +86,7 @@ class Interval {
    constructor(callback: Function, time: number) {
       this.#lastCallTime = Date.now();
       this.#timeToNextCall = time;
-      this.#intervalId = window.setInterval(this.#proxyCallback, time);
+      this.#intervalId = window.setInterval(this.#proxyCallback.bind(this), time);
       this.#callback = callback;
       this.#duration = time;
       this.#state = 0;
@@ -134,7 +134,7 @@ class Interval {
    resume(): void {
       if (this.#state === 1) {
          this.#lastCallTime = Date.now();
-         this.#intervalId = window.setTimeout(this.#proxyCallbackResume, this.#timeToNextCall);
+         this.#intervalId = window.setTimeout(this.#proxyCallbackResume.bind(this), this.#timeToNextCall);
          this.#state = 0;
          this.#resumeTimeout = true;
       }
@@ -142,7 +142,7 @@ class Interval {
 
    #proxyCallbackResume(): void {
       this.#proxyCallback();
-      this.#intervalId = window.setInterval(this.#proxyCallback, this.#timeToNextCall);
+      this.#intervalId = window.setInterval(this.#proxyCallback.bind(this), this.#timeToNextCall);
       this.#resumeTimeout = false;
    }
 }
