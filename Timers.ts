@@ -1,3 +1,4 @@
+// inspiration: https://stackoverflow.com/questions/3969475/javascript-pause-settimeout
 class Timeout {
    //the timeout id
    #timeoutId: number;

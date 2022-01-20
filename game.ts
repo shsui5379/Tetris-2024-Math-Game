@@ -69,6 +69,8 @@ function keyHandler(e: KeyboardEvent): void {
 
 /**
  * Handles swipes
+ * 
+ * inspiration: https://stackoverflow.com/questions/2264072/detect-a-finger-swipe-through-javascript-on-the-iphone-and-android
  * @param {TouchEvent} e Details on the touch
  */
 function swipeHandler(e: TouchEvent): void {
