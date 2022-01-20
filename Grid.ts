@@ -14,6 +14,8 @@ class Grid {
     //The time for a Tile to move from one row to another in ms
     #dropTime: number;
 
+    #dropInterval: Interval;
+
     /**
      * Constructs a Grid with the given dimensions, and render it on the display
      * @constructor
@@ -225,9 +227,9 @@ class Grid {
             let currCol = randomColumn;
             let totalDropTime = this.calculateDropSeconds(currRow + 1, currCol);
 
-            let dropInterval = setInterval(() => {
+            this.#dropInterval = new Interval(() => {
                 if ((!this.moveTileDown(currRow, currCol))) {
-                    clearInterval(dropInterval);
+                    this.#dropInterval.clear();
                     grid[currRow][currCol].setDropping(false);
                 }
                 else {

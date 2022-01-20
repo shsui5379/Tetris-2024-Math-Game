@@ -34,7 +34,7 @@ function startGame() {
 function reset() {
     if (confirm("Are you sure you want to start a new game?")) {
         console.log("user consented to restart");
-        clearTimeout(currentTimeout);
+        currentTimeout.clear();
         grid.clear();
         score = 0;
         gameOver();
@@ -63,6 +63,8 @@ function keyHandler(e) {
 }
 /**
  * Handles swipes
+ *
+ * inspiration: https://stackoverflow.com/questions/2264072/detect-a-finger-swipe-through-javascript-on-the-iphone-and-android
  * @param {TouchEvent} e Details on the touch
  */
 function swipeHandler(e) {
@@ -123,7 +125,7 @@ function configureDropInterval() {
     dropInterval(delay);
 }
 function dropInterval(delay) {
-    currentTimeout = setTimeout(() => {
+    currentTimeout = new Timeout(() => {
         delay = grid.dropRandomNumber();
         changeCondition();
         if (delay === false) {

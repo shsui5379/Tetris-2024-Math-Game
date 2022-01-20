@@ -2,7 +2,7 @@ let currentCondition: MergeCondition; //Testing
 let grid: Grid;
 let score: number;
 let ongoing: boolean;
-let currentTimeout: NodeJS.Timeout;
+let currentTimeout: Timeout;
 
 let touchX: number;
 let touchY: number;
@@ -40,7 +40,7 @@ function reset(): void {
     if (confirm("Are you sure you want to start a new game?")) {
         console.log("user consented to restart");
 
-        clearTimeout(currentTimeout);
+        currentTimeout.clear();
         grid.clear();
         score = 0;
         gameOver();
@@ -134,7 +134,7 @@ function configureDropInterval(): void {
 }
 
 function dropInterval(delay: number | boolean): void {
-    currentTimeout = setTimeout(() => {
+    currentTimeout = new Timeout(() => {
         delay = grid.dropRandomNumber();
         changeCondition();
         if (delay === false) {
