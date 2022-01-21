@@ -7,6 +7,7 @@ let paused;
 let currentTimeout;
 let touchX;
 let touchY;
+let pausedByButton = false;
 /**
  * Sets up the page
  */
@@ -17,6 +18,9 @@ function initializeGame() {
     //touch event
     window.addEventListener("touchstart", swipeHandler);
     window.addEventListener("touchend", swipeHandler);
+    //autopause
+    window.addEventListener("blur", function () { togglePause(false); });
+    window.addEventListener("focus", function () { togglePause(false); });
     //scoreboard stuff
     if (!localStorage.getItem("highscore")) {
         localStorage.setItem("highscore", score.toString());
@@ -27,6 +31,7 @@ function startGame() {
     score = 0;
     ongoing = true;
     paused = false;
+    document.getElementById("pause").innerText = "Pause";
     changeCondition();
     configureDropInterval();
 }
@@ -48,7 +53,7 @@ function reset() {
  * @param {KeyboardEvent} e Details on the keypress
  */
 function keyHandler(e) {
-    if (ongoing) {
+    if (ongoing && !paused) {
         if (e.key == "ArrowDown") {
             console.log("down key pressed");
             grid.mergeTilesDown(currentCondition);
@@ -70,7 +75,7 @@ function keyHandler(e) {
  * @param {TouchEvent} e Details on the touch
  */
 function swipeHandler(e) {
-    if (ongoing) {
+    if (ongoing && !paused) {
         if (e.type == "touchstart") {
             touchX = e.touches[0].clientX;
             touchY = e.touches[0].clientY;
@@ -151,5 +156,31 @@ function gameOver() {
  */
 function openInstructions() {
     open("instructions.html", "_blank");
+}
+/**
+ * Toggles the pause state of the game
+ *
+ * @param {boolean} userPaused  True if the pause was manually requested by user
+ */
+function togglePause(userPaused) {
+    if (ongoing) {
+        if (paused) { //resume
+            if (userPaused && pausedByButton || !pausedByButton) { //manual pause require manual unpause
+                paused = false;
+                printOnMessageBoard(currentCondition.toString());
+                document.getElementById("pause").innerText = "Pause";
+                currentTimeout.resume();
+                grid.resumeDrop();
+            }
+        }
+        else { //pause
+            pausedByButton = userPaused;
+            paused = true;
+            printOnMessageBoard("Paused");
+            document.getElementById("pause").innerText = "Resume";
+            currentTimeout.pause();
+            grid.pauseDrop();
+        }
+    }
 }
 //# sourceMappingURL=game.js.map

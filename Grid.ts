@@ -14,6 +14,8 @@ class Grid {
     //The time for a Tile to move from one row to another in ms
     #dropTime: number;
 
+    #dropInterval: Interval;
+
     /**
      * Constructs a Grid with the given dimensions, and render it on the display
      * @constructor
@@ -237,6 +239,8 @@ class Grid {
                 }
             }, this.getDropTime());
 
+            this.#dropInterval = dropInterval;
+
             return (this.#coolDown + totalDropTime);
         }
     }
@@ -268,6 +272,14 @@ class Grid {
             });
         });
         this.display();
+    }
+
+    pauseDrop(): void {
+        this.#dropInterval.pause();
+    }
+
+    resumeDrop(): void {
+        this.#dropInterval.resume();
     }
 
     //Setter Method(s)
