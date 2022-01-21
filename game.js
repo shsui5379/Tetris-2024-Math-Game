@@ -3,6 +3,7 @@ let currentCondition; //Testing
 let grid;
 let score;
 let ongoing;
+let paused;
 let currentTimeout;
 let touchX;
 let touchY;
@@ -25,6 +26,7 @@ function initializeGame() {
 function startGame() {
     score = 0;
     ongoing = true;
+    paused = false;
     changeCondition();
     configureDropInterval();
 }

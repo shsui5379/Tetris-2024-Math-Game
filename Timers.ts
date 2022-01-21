@@ -30,10 +30,8 @@ class Timeout {
     * Clears this timeout
     */
    clear(): void {
-      if (this.#state !== 2) {
-         clearTimeout(this.#timeoutId);
-         this.#state = 2;
-      }
+      clearTimeout(this.#timeoutId);
+      this.#state = 2;
    }
 
    /**
@@ -94,6 +92,7 @@ class Interval {
    }
 
    #proxyCallback(): void {
+      console.log(this.#intervalId + " calling");
       this.#timeToNextCall = this.#duration;
       this.#lastCallTime = Date.now();
       this.#callback();
@@ -103,14 +102,13 @@ class Interval {
     * Clears this interval
     */
    clear(): void {
-      if (this.#state !== 2) {
-         if (this.#resumeTimeout) {
-            clearTimeout(this.#intervalId);
-         } else {
-            clearInterval(this.#intervalId);
-         }
-         this.#state = 2;
+      if (this.#resumeTimeout) {
+         clearTimeout(this.#intervalId);
+      } else {
+         clearInterval(this.#intervalId);
+         console.log(this.#intervalId + "cleared");
       }
+      this.#state = 2;
    }
 
    /**

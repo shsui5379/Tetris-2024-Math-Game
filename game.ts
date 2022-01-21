@@ -2,6 +2,7 @@ let currentCondition: MergeCondition; //Testing
 let grid: Grid;
 let score: number;
 let ongoing: boolean;
+let paused: boolean;
 let currentTimeout: Timeout;
 
 let touchX: number;
@@ -29,6 +30,7 @@ function initializeGame(): void {
 function startGame(): void {
     score = 0;
     ongoing = true;
+    paused = false;
     changeCondition();
     configureDropInterval();
 }

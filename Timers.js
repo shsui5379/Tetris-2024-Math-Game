@@ -41,10 +41,8 @@ class Timeout {
      * Clears this timeout
      */
     clear() {
-        if (__classPrivateFieldGet(this, _Timeout_state, "f") !== 2) {
-            clearTimeout(__classPrivateFieldGet(this, _Timeout_timeoutId, "f"));
-            __classPrivateFieldSet(this, _Timeout_state, 2, "f");
-        }
+        clearTimeout(__classPrivateFieldGet(this, _Timeout_timeoutId, "f"));
+        __classPrivateFieldSet(this, _Timeout_state, 2, "f");
     }
     /**
      * Pauses this timeout
@@ -104,15 +102,14 @@ class Interval {
      * Clears this interval
      */
     clear() {
-        if (__classPrivateFieldGet(this, _Interval_state, "f") !== 2) {
-            if (__classPrivateFieldGet(this, _Interval_resumeTimeout, "f")) {
-                clearTimeout(__classPrivateFieldGet(this, _Interval_intervalId, "f"));
-            }
-            else {
-                clearInterval(__classPrivateFieldGet(this, _Interval_intervalId, "f"));
-            }
-            __classPrivateFieldSet(this, _Interval_state, 2, "f");
+        if (__classPrivateFieldGet(this, _Interval_resumeTimeout, "f")) {
+            clearTimeout(__classPrivateFieldGet(this, _Interval_intervalId, "f"));
         }
+        else {
+            clearInterval(__classPrivateFieldGet(this, _Interval_intervalId, "f"));
+            console.log(__classPrivateFieldGet(this, _Interval_intervalId, "f") + "cleared");
+        }
+        __classPrivateFieldSet(this, _Interval_state, 2, "f");
     }
     /**
      * Pauses this interval
@@ -142,6 +139,7 @@ class Interval {
     }
 }
 _Interval_intervalId = new WeakMap(), _Interval_lastCallTime = new WeakMap(), _Interval_timeToNextCall = new WeakMap(), _Interval_callback = new WeakMap(), _Interval_duration = new WeakMap(), _Interval_state = new WeakMap(), _Interval_resumeTimeout = new WeakMap(), _Interval_instances = new WeakSet(), _Interval_proxyCallback = function _Interval_proxyCallback() {
+    console.log(__classPrivateFieldGet(this, _Interval_intervalId, "f") + " calling");
     __classPrivateFieldSet(this, _Interval_timeToNextCall, __classPrivateFieldGet(this, _Interval_duration, "f"), "f");
     __classPrivateFieldSet(this, _Interval_lastCallTime, Date.now(), "f");
     __classPrivateFieldGet(this, _Interval_callback, "f").call(this);
