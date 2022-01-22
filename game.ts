@@ -2,10 +2,13 @@ let currentCondition: MergeCondition; //Testing
 let grid: Grid;
 let score: number;
 let ongoing: boolean;
-let currentTimeout: NodeJS.Timeout;
+let paused: boolean;
+let currentTimeout: Timeout;
 
 let touchX: number;
 let touchY: number;
+
+let pausedByButton = false;
 
 /**
  * Sets up the page
@@ -19,6 +22,10 @@ function initializeGame(): void {
     window.addEventListener("touchstart", swipeHandler);
     window.addEventListener("touchend", swipeHandler);
 
+    //autopause
+    window.addEventListener("blur", function () { togglePause(false); });
+    window.addEventListener("focus", function () { togglePause(false); });
+
     //scoreboard stuff
     if (!localStorage.getItem("highscore")) {
         localStorage.setItem("highscore", score.toString());
@@ -29,6 +36,8 @@ function initializeGame(): void {
 function startGame(): void {
     score = 0;
     ongoing = true;
+    paused = false;
+    (<HTMLButtonElement>document.getElementById("pause")).innerText = "Pause";
     changeCondition();
     configureDropInterval();
 }
@@ -40,7 +49,7 @@ function reset(): void {
     if (confirm("Are you sure you want to start a new game?")) {
         console.log("user consented to restart");
 
-        clearTimeout(currentTimeout);
+        currentTimeout.clear();
         grid.clear();
         score = 0;
         gameOver();
@@ -53,7 +62,7 @@ function reset(): void {
  * @param {KeyboardEvent} e Details on the keypress
  */
 function keyHandler(e: KeyboardEvent): void {
-    if (ongoing) {
+    if (ongoing && !paused) {
         if (e.key == "ArrowDown") {
             console.log("down key pressed");
             grid.mergeTilesDown(currentCondition);
@@ -69,10 +78,12 @@ function keyHandler(e: KeyboardEvent): void {
 
 /**
  * Handles swipes
+ * 
+ * inspiration: https://stackoverflow.com/questions/2264072/detect-a-finger-swipe-through-javascript-on-the-iphone-and-android
  * @param {TouchEvent} e Details on the touch
  */
 function swipeHandler(e: TouchEvent): void {
-    if (ongoing) {
+    if (ongoing && !paused) {
         if (e.type == "touchstart") {
             touchX = e.touches[0].clientX;
             touchY = e.touches[0].clientY;
@@ -132,7 +143,7 @@ function configureDropInterval(): void {
 }
 
 function dropInterval(delay: number | boolean): void {
-    currentTimeout = setTimeout(() => {
+    currentTimeout = new Timeout(() => {
         delay = grid.dropRandomNumber();
         changeCondition();
         if (delay === false) {
@@ -158,4 +169,30 @@ function gameOver(): void {
  */
 function openInstructions() {
     open("instructions.html", "_blank");
+}
+
+/**
+ * Toggles the pause state of the game
+ * 
+ * @param {boolean} userPaused  True if the pause was manually requested by user
+ */
+function togglePause(userPaused: boolean): void {
+    if (ongoing) {
+        if (paused) { //resume
+            if (userPaused && pausedByButton || !pausedByButton) { //manual pause require manual unpause
+                paused = false;
+                printOnMessageBoard(currentCondition.toString());
+                (<HTMLButtonElement>document.getElementById("pause")).innerText = "Pause";
+                currentTimeout.resume();
+                grid.resumeDrop();
+            }
+        } else { //pause
+            pausedByButton = userPaused;
+            paused = true;
+            printOnMessageBoard("Paused");
+            (<HTMLButtonElement>document.getElementById("pause")).innerText = "Resume";
+            currentTimeout.pause();
+            grid.pauseDrop();
+        }
+    }
 }
