@@ -20,7 +20,7 @@ function isPrime(number) {
  * @param lower Lower bound, inclusive
  * @returns  A random integer between upper and lower
  */
-function randomInteger(upper, lower) {
+function randomInteger(lower, upper) {
     return Math.floor(Math.random() * (upper - lower + 1) + lower);
 }
 //# sourceMappingURL=math.js.map

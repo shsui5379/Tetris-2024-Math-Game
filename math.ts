@@ -20,6 +20,6 @@ function isPrime(number: number): boolean {
  * @param lower Lower bound, inclusive
  * @returns  A random integer between upper and lower
  */
-function randomInteger(upper: number, lower: number): number {
+function randomInteger(lower: number, upper: number): number {
    return Math.floor(Math.random() * (upper - lower + 1) + lower);
 }
