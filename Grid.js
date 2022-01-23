@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _Grid_numRow, _Grid_numCol, _Grid_grid, _Grid_coolDown, _Grid_dropTime;
+var _Grid_numRow, _Grid_numCol, _Grid_grid, _Grid_coolDown, _Grid_dropTime, _Grid_dropInterval;
 class Grid {
     /**
      * Constructs a Grid with the given dimensions, and render it on the display
@@ -31,6 +31,7 @@ class Grid {
         _Grid_coolDown.set(this, void 0);
         //The time for a Tile to move from one row to another in ms
         _Grid_dropTime.set(this, void 0);
+        _Grid_dropInterval.set(this, void 0);
         __classPrivateFieldSet(this, _Grid_numRow, row, "f");
         __classPrivateFieldSet(this, _Grid_numCol, column, "f");
         __classPrivateFieldSet(this, _Grid_grid, [], "f");
@@ -209,9 +210,9 @@ class Grid {
             let currRow = 0;
             let currCol = randomColumn;
             let totalDropTime = this.calculateDropSeconds(currRow + 1, currCol);
-            let dropInterval = setInterval(() => {
+            let dropInterval = new Interval(() => {
                 if ((!this.moveTileDown(currRow, currCol))) {
-                    clearInterval(dropInterval);
+                    dropInterval.clear();
                     grid[currRow][currCol].setDropping(false);
                 }
                 else {
@@ -220,6 +221,7 @@ class Grid {
                     currRow++;
                 }
             }, this.getDropTime());
+            __classPrivateFieldSet(this, _Grid_dropInterval, dropInterval, "f");
             return (__classPrivateFieldGet(this, _Grid_coolDown, "f") + totalDropTime);
         }
     }
@@ -248,6 +250,12 @@ class Grid {
         });
         this.display();
     }
+    pauseDrop() {
+        __classPrivateFieldGet(this, _Grid_dropInterval, "f").pause();
+    }
+    resumeDrop() {
+        __classPrivateFieldGet(this, _Grid_dropInterval, "f").resume();
+    }
     //Setter Method(s)
     setCoolDown(cd) {
         __classPrivateFieldSet(this, _Grid_coolDown, cd, "f");
@@ -263,7 +271,7 @@ class Grid {
         return __classPrivateFieldGet(this, _Grid_dropTime, "f");
     }
 }
-_Grid_numRow = new WeakMap(), _Grid_numCol = new WeakMap(), _Grid_grid = new WeakMap(), _Grid_coolDown = new WeakMap(), _Grid_dropTime = new WeakMap();
+_Grid_numRow = new WeakMap(), _Grid_numCol = new WeakMap(), _Grid_grid = new WeakMap(), _Grid_coolDown = new WeakMap(), _Grid_dropTime = new WeakMap(), _Grid_dropInterval = new WeakMap();
 /*
 When the game begins, drop a tile and when it touches the floor,
 let the cooldown begin. After the cooldown, keep dropping tile.
