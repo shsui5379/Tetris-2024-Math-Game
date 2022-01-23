@@ -114,6 +114,7 @@ function swipeHandler(e: TouchEvent): void {
  */
 function changeCondition(): void {
     currentCondition = possibleConditions[Math.floor(Math.random() * possibleConditions.length)];
+    currentCondition.randomizeParameters();
 
     printOnMessageBoard(currentCondition.toString());
 }
