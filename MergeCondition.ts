@@ -45,3 +45,18 @@ class SumToPrimality implements MergeCondition {
     }
 }
 possibleConditions.push(new SumToPrimality());
+
+class IdenticalTiles implements MergeCondition {
+    constructor() { }
+
+    toString(): string {
+        return "Tiles with the same number, color and shape";
+    }
+
+    randomizeParameters(): void { }
+
+    check(tile1: Tile, tile2: Tile): boolean {
+        return tile1.getColor() === tile2.getColor() && tile1.getShape() === tile2.getShape() && tile1.getNumber() === tile2.getNumber();
+    }
+}
+possibleConditions.push(new IdenticalTiles());

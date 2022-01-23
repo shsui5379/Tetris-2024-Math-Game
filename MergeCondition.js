@@ -46,4 +46,15 @@ class SumToPrimality {
 }
 _SumToPrimality_primality = new WeakMap();
 possibleConditions.push(new SumToPrimality());
+class IdenticalTiles {
+    constructor() { }
+    toString() {
+        return "Tiles with the same number, color and shape";
+    }
+    randomizeParameters() { }
+    check(tile1, tile2) {
+        return tile1.getColor() === tile2.getColor() && tile1.getShape() === tile2.getShape() && tile1.getNumber() === tile2.getNumber();
+    }
+}
+possibleConditions.push(new IdenticalTiles());
 //# sourceMappingURL=MergeCondition.js.map
