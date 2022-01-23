@@ -60,3 +60,56 @@ class IdenticalTiles implements MergeCondition {
     }
 }
 possibleConditions.push(new IdenticalTiles());
+
+class DifferenceOfX implements MergeCondition {
+    #difference: number;
+
+    constructor() { this.randomizeParameters(); }
+
+    toString(): string {
+        return "Numbers with a difference of " + this.#difference;
+    }
+
+    randomizeParameters(): void {
+        this.#difference = randomInteger(1, 3);
+    }
+
+    check(tile1: Tile, tile2: Tile): boolean {
+        return Math.abs(<number>tile1.getNumber() - <number>tile2.getNumber()) === this.#difference;
+    }
+}
+possibleConditions.push(new DifferenceOfX());
+
+class RatioOfX implements MergeCondition {
+    #ratio: number;
+
+    constructor() { this.randomizeParameters(); }
+
+    toString(): string {
+        return "Numbers with a ratio of " + this.#ratio;
+    }
+
+    randomizeParameters(): void {
+        this.#ratio = randomInteger(1, 3);
+    }
+
+    check(tile1: Tile, tile2: Tile): boolean {
+        return <number>tile1.getNumber() / <number>tile2.getNumber() === this.#ratio || <number>tile2.getNumber() / <number>tile1.getNumber() === this.#ratio;
+    }
+}
+possibleConditions.push(new RatioOfX());
+
+class SameParity implements MergeCondition {
+    constructor() { }
+
+    toString(): string {
+        return "Numbers with the same parity";
+    }
+
+    randomizeParameters(): void { }
+
+    check(tile1: Tile, tile2: Tile): boolean {
+        return (<number>tile1.getNumber() + <number>tile2.getNumber()) % 2 === 0;
+    }
+}
+possibleConditions.push(new SameParity());

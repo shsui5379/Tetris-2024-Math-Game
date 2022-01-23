@@ -13,3 +13,13 @@ function isPrime(number: number): boolean {
 
    return true;
 }
+
+/**
+ * Generates a random integer between upper and lower, inclusive
+ * @param upper Upper bound, inclusive
+ * @param lower Lower bound, inclusive
+ * @returns  A random integer between upper and lower
+ */
+function randomInteger(upper: number, lower: number): number {
+   return Math.floor(Math.random() * (upper - lower + 1) + lower);
+}
