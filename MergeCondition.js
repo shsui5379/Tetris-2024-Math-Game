@@ -12,6 +12,11 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 };
 var _SumToParity_parity, _SumToPrimality_primality, _DifferenceOfX_difference, _RatioOfX_ratio;
 var possibleConditions = [];
+function testConditions() {
+    for (let condition of possibleConditions) {
+        condition.testUnit();
+    }
+}
 class SumToParity {
     constructor() {
         _SumToParity_parity.set(this, void 0);
@@ -25,6 +30,22 @@ class SumToParity {
     }
     check(tile1, tile2) {
         return __classPrivateFieldGet(this, _SumToParity_parity, "f") === "odd" && (tile1.getNumber() + tile2.getNumber()) % 2 === 1 || __classPrivateFieldGet(this, _SumToParity_parity, "f") === "even" && (tile1.getNumber() + tile2.getNumber()) % 2 === 0;
+    }
+    testUnit() {
+        let dummyDiv = document.createElement("div");
+        let t1 = new Tile(dummyDiv);
+        let t2 = new Tile(dummyDiv);
+        __classPrivateFieldSet(this, _SumToParity_parity, "odd", "f");
+        t1.setNumber(1);
+        t2.setNumber(3);
+        console.assert(this.check(t1, t2) === false); //4
+        t2.setNumber(4);
+        console.assert(this.check(t1, t2) === true); //5
+        __classPrivateFieldSet(this, _SumToParity_parity, "even", "f");
+        console.assert(this.check(t1, t2) === false); //5
+        t2.setNumber(5);
+        console.assert(this.check(t2, t1) === true); //6
+        dummyDiv.remove();
     }
 }
 _SumToParity_parity = new WeakMap();
@@ -43,6 +64,27 @@ class SumToPrimality {
     check(tile1, tile2) {
         return __classPrivateFieldGet(this, _SumToPrimality_primality, "f") === "prime" && isPrime(tile1.getNumber() + tile2.getNumber()) || __classPrivateFieldGet(this, _SumToPrimality_primality, "f") === "composite" && !isPrime(tile1.getNumber() + tile2.getNumber());
     }
+    testUnit() {
+        let dummyDiv = document.createElement("div");
+        let t1 = new Tile(dummyDiv);
+        let t2 = new Tile(dummyDiv);
+        __classPrivateFieldSet(this, _SumToPrimality_primality, "prime", "f");
+        t1.setNumber(1);
+        t2.setNumber(3);
+        console.assert(this.check(t1, t2) === false); //4
+        t2.setNumber(1);
+        console.assert(this.check(t2, t1) === true); //2
+        t1.setNumber(0);
+        console.assert(this.check(t1, t2) === false); //1
+        t2.setNumber(0);
+        console.assert(this.check(t2, t1) === false); //0
+        __classPrivateFieldSet(this, _SumToPrimality_primality, "composite", "f");
+        t2.setNumber(3);
+        console.assert(this.check(t2, t1) === false); //3
+        t1.setNumber(5);
+        console.assert(this.check(t1, t2) === true); //8
+        dummyDiv.remove();
+    }
 }
 _SumToPrimality_primality = new WeakMap();
 possibleConditions.push(new SumToPrimality());
@@ -54,6 +96,19 @@ class IdenticalTiles {
     randomizeParameters() { }
     check(tile1, tile2) {
         return tile1.getColor() === tile2.getColor() && tile1.getShape() === tile2.getShape() && tile1.getNumber() === tile2.getNumber();
+    }
+    testUnit() {
+        let dummyDiv = document.createElement("div");
+        let t1 = new Tile(dummyDiv);
+        let t2 = new Tile(dummyDiv);
+        t1.setNumber(1);
+        t2.setNumber(3);
+        console.assert(this.check(t1, t2) === false); //square, #000000, 1 && square, #000000, 3
+        t1.setNumber(3);
+        console.assert(this.check(t2, t1) === true); //square, #000000, 3 && square, #000000, 3
+        t1.setColor("#2196F3");
+        console.assert(this.check(t1, t2) === false); //square, #2196F3, 3 && square, #000000, 3
+        dummyDiv.remove();
     }
 }
 possibleConditions.push(new IdenticalTiles());
@@ -70,6 +125,21 @@ class DifferenceOfX {
     }
     check(tile1, tile2) {
         return Math.abs(tile1.getNumber() - tile2.getNumber()) === __classPrivateFieldGet(this, _DifferenceOfX_difference, "f");
+    }
+    testUnit() {
+        let dummyDiv = document.createElement("div");
+        let t1 = new Tile(dummyDiv);
+        let t2 = new Tile(dummyDiv);
+        __classPrivateFieldSet(this, _DifferenceOfX_difference, 2, "f");
+        t1.setNumber(1);
+        t2.setNumber(3);
+        console.assert(this.check(t1, t2) === true); //1, 3
+        console.assert(this.check(t2, t1) === true); //3, 1
+        t1.setNumber(2);
+        console.assert(this.check(t1, t2) === false); //2, 3
+        t2.setNumber(5);
+        console.assert(this.check(t2, t1) === false); //2, 5
+        dummyDiv.remove();
     }
 }
 _DifferenceOfX_difference = new WeakMap();
@@ -88,6 +158,20 @@ class RatioOfX {
     check(tile1, tile2) {
         return tile1.getNumber() / tile2.getNumber() === __classPrivateFieldGet(this, _RatioOfX_ratio, "f") || tile2.getNumber() / tile1.getNumber() === __classPrivateFieldGet(this, _RatioOfX_ratio, "f");
     }
+    testUnit() {
+        let dummyDiv = document.createElement("div");
+        let t1 = new Tile(dummyDiv);
+        let t2 = new Tile(dummyDiv);
+        __classPrivateFieldSet(this, _RatioOfX_ratio, 2, "f");
+        t1.setNumber(1);
+        t2.setNumber(3);
+        console.assert(this.check(t1, t2) === false); //1, 3
+        console.assert(this.check(t2, t1) === false); //3, 1
+        t1.setNumber(6);
+        console.assert(this.check(t1, t2) === true); //6, 3
+        console.assert(this.check(t2, t1) === true); //3, 6
+        dummyDiv.remove();
+    }
 }
 _RatioOfX_ratio = new WeakMap();
 possibleConditions.push(new RatioOfX());
@@ -99,6 +183,19 @@ class SameParity {
     randomizeParameters() { }
     check(tile1, tile2) {
         return (tile1.getNumber() + tile2.getNumber()) % 2 === 0;
+    }
+    testUnit() {
+        let dummyDiv = document.createElement("div");
+        let t1 = new Tile(dummyDiv);
+        let t2 = new Tile(dummyDiv);
+        t1.setNumber(1);
+        t2.setNumber(3);
+        console.assert(this.check(t1, t2) === true); //1, 3
+        t1.setNumber(2);
+        console.assert(this.check(t2, t1) === false); //2, 3
+        t2.setNumber(4);
+        console.assert(this.check(t1, t2) === true); //2, 4
+        dummyDiv.remove();
     }
 }
 possibleConditions.push(new SameParity());
