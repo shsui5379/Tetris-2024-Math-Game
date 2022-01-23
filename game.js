@@ -1,5 +1,5 @@
 "use strict";
-let currentCondition; //Testing
+let currentCondition;
 let grid;
 let score;
 let ongoing;
@@ -107,6 +107,7 @@ function swipeHandler(e) {
  */
 function changeCondition() {
     currentCondition = possibleConditions[Math.floor(Math.random() * possibleConditions.length)];
+    currentCondition.randomizeParameters();
     printOnMessageBoard(currentCondition.toString());
 }
 /**

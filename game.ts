@@ -1,4 +1,4 @@
-let currentCondition: MergeCondition; //Testing
+let currentCondition: MergeCondition;
 let grid: Grid;
 let score: number;
 let ongoing: boolean;
@@ -114,6 +114,7 @@ function swipeHandler(e: TouchEvent): void {
  */
 function changeCondition(): void {
     currentCondition = possibleConditions[Math.floor(Math.random() * possibleConditions.length)];
+    currentCondition.randomizeParameters();
 
     printOnMessageBoard(currentCondition.toString());
 }
