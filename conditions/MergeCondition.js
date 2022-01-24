@@ -11,4 +11,5 @@ possibleConditions.push(new IdenticalTiles());
 possibleConditions.push(new DifferenceOfX());
 possibleConditions.push(new RatioOfX());
 possibleConditions.push(new SameParity());
+possibleConditions.push(new CongruentModX());
 //# sourceMappingURL=MergeCondition.js.map
