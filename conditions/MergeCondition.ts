@@ -1,35 +1,22 @@
-interface MergeCondition{
+interface MergeCondition {
     check(tile1: Tile, tile2: Tile): boolean;
     toString(): string;
     randomizeParameters(): void;
+    testUnit(): void;
 }
 
-var possibleConditions: MergeCondition[] = [{
-    check(tile1: Tile, tile2: Tile): boolean{
-        return ((tile1.getNumber() || 0) + (tile2.getNumber() || 0 ) < 10);
-    },
-    toString(): string{ return ""},
-    randomizeParameters(): void {return}
-}];
+var possibleConditions: MergeCondition[] = [];
 
-class SumToPrimeNumber implements MergeCondition {
-  #value: number;
-  #parity: string;
-
-  constructor() { this.randomizeParameters(); }
-
-  toString(): string { /* implement */ return "";}
-  randomizeParameters(): void {
-      //Testing
-      this.#value = 1;
-      this.#parity = "odd";
-  }
-  check(tile1: Tile, tile2: Tile): boolean { /* implement */ return true;}
-
-  someHelperMethod(): number { /* implement */ return -1;}
+function testConditions(): void {
+    for (let condition of possibleConditions) {
+        condition.testUnit();
+    }
 }
-//possibleConditions.push(new SumToPrimeNumber());
 
-//Test
-//console.log(possibleConditions[0]);
-
+possibleConditions.push(new SumToParity());
+possibleConditions.push(new SumToPrimality());
+possibleConditions.push(new IdenticalTiles());
+possibleConditions.push(new DifferenceOfX());
+possibleConditions.push(new RatioOfX());
+possibleConditions.push(new SameParity());
+possibleConditions.push(new CongruentModX());

@@ -1,5 +1,5 @@
 "use strict";
-let currentCondition; //Testing
+let currentCondition;
 let grid;
 let score;
 let ongoing;
@@ -56,15 +56,24 @@ function keyHandler(e) {
     if (ongoing && !paused) {
         if (e.key == "ArrowDown") {
             console.log("down key pressed");
-            grid.mergeTilesDown(currentCondition);
+            let numberOfMerges = grid.mergeTilesDown(currentCondition);
+            if (numberOfMerges > 0) {
+                changeCondition();
+            }
         }
         else if (e.key == "ArrowLeft") {
             console.log("left key pressed");
-            grid.mergeTilesLeft(currentCondition);
+            let numberOfMerges = grid.mergeTilesLeft(currentCondition);
+            if (numberOfMerges > 0) {
+                changeCondition();
+            }
         }
         else if (e.key == "ArrowRight") {
             console.log("right key pressed");
-            grid.mergeTilesRight(currentCondition);
+            let numberOfMerges = grid.mergeTilesRight(currentCondition);
+            if (numberOfMerges > 0) {
+                changeCondition();
+            }
         }
     }
 }
@@ -86,17 +95,26 @@ function swipeHandler(e) {
             if (Math.abs(xDiff) > Math.abs(yDiff)) { //horizontal swipe
                 if (xDiff > 0) {
                     console.log("swiped right");
-                    grid.mergeTilesRight(currentCondition);
+                    let numberOfMerges = grid.mergeTilesRight(currentCondition);
+                    if (numberOfMerges > 0) {
+                        changeCondition();
+                    }
                 }
                 else {
                     console.log("swiped left");
-                    grid.mergeTilesLeft(currentCondition);
+                    let numberOfMerges = grid.mergeTilesLeft(currentCondition);
+                    if (numberOfMerges > 0) {
+                        changeCondition();
+                    }
                 }
             }
             else {
                 if (yDiff > 0) {
                     console.log("swiped down");
-                    grid.mergeTilesDown(currentCondition);
+                    let numberOfMerges = grid.mergeTilesDown(currentCondition);
+                    if (numberOfMerges > 0) {
+                        changeCondition();
+                    }
                 }
             }
         }
@@ -107,6 +125,7 @@ function swipeHandler(e) {
  */
 function changeCondition() {
     currentCondition = possibleConditions[Math.floor(Math.random() * possibleConditions.length)];
+    currentCondition.randomizeParameters();
     printOnMessageBoard(currentCondition.toString());
 }
 /**
@@ -134,7 +153,6 @@ function configureDropInterval() {
 function dropInterval(delay) {
     currentTimeout = new Timeout(() => {
         delay = grid.dropRandomNumber();
-        changeCondition();
         if (delay === false) {
             gameOver();
         }
