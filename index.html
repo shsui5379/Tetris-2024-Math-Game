@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8">
+   <meta charset="UTF-8" />
 
    <title>game</title>
 
@@ -26,6 +26,28 @@
    <script src="conditions/MergeCondition.js"></script>
    <script src="scripts/game.js"></script>
    <link rel="stylesheet" href="style.css" />
+
+   <link rel="manifest" href="./manifest.webmanifest" />
+
+   <meta name="theme-color" content="#FFCA28" />
+   <meta name="battery-savings" content="allow-reduced-framerate allow-reduced-script-speed" />
+   <meta name="description" content="This game contains elements of 2048 and Tetris, with math involved" />
+
+   <link rel="icon" href="icon.png" type="image/png" />
+   <link rel="apple-touch-icon" href="icon.png" />
+   <link rel="apple-touch-startup-image" href="splash.png" />
+
+   <script>
+      if ("serviceWorker" in navigator) {
+         navigator.serviceWorker.register("./sw.js");
+      }
+
+      window.addEventListener('beforeunload', function (e) {
+         e.preventDefault();
+         e.returnValue = "Do you want to end the game?";
+         return "Do you want to end the game?";
+      });
+   </script>
 </head>
 
 <body onload="initializeGame();" onkeydown="keyHandler(event);">
