@@ -80,6 +80,12 @@ button:active {
    right: 1%
 }
 
+#pause {
+   position: absolute;
+   top: 1%;
+   left: 1%
+}
+
 .scoreboard {
    position: absolute;
    left: 1%;

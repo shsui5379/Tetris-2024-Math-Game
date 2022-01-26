@@ -10,11 +10,21 @@
                height=device-height, 
                initial-scale=1.0" />
 
-   <script src="Grid.js"></script>
-   <script src="Tile.js"></script>
-   <script src="script.js"></script>
-   <script src="MergeCondition.js"></script>
-   <script src="game.js"></script>
+   <script src="conditions/DifferenceOfX.js"></script>
+   <script src="conditions/IdenticalTiles.js"></script>
+   <script src="conditions/RatioOfX.js"></script>
+   <script src="conditions/SameParity.js"></script>
+   <script src="conditions/SumToPrimality.js"></script>
+   <script src="conditions/SumToParity.js"></script>
+   <script src="conditions/CongruentModX.js"></script>
+
+   <script src="scripts/math.js"></script>
+   <script src="scripts/Timers.js"></script>
+   <script src="scripts/Grid.js"></script>
+   <script src="scripts/Tile.js"></script>
+   <script src="scripts/script.js"></script>
+   <script src="conditions/MergeCondition.js"></script>
+   <script src="scripts/game.js"></script>
    <link rel="stylesheet" href="style.css" />
 
    <link rel="manifest" href="./manifest.webmanifest" />
@@ -52,6 +62,7 @@
    </div>
 
    <button id="reset" onclick="reset();" type="button">Reset</button>
+   <button id="pause" onclick="togglePause(true);" type="button">Pause</button>
    <button id="instructions" onclick="openInstructions();" type="button">Help</button>
 </body>
 
