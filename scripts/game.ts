@@ -65,16 +65,25 @@ function keyHandler(e: KeyboardEvent): void {
     if (ongoing && !paused) {
         if (e.key == "ArrowDown") {
             console.log("down key pressed");
-            grid.mergeTilesDown(currentCondition);
-            changeCondition();
+            let numberOfMerges = grid.mergeTilesDown(currentCondition);
+
+            if (numberOfMerges > 0) {
+                changeCondition();
+            }
         } else if (e.key == "ArrowLeft") {
             console.log("left key pressed");
-            grid.mergeTilesLeft(currentCondition);
-            changeCondition();
+            let numberOfMerges = grid.mergeTilesLeft(currentCondition);
+
+            if (numberOfMerges > 0) {
+                changeCondition();
+            }
         } else if (e.key == "ArrowRight") {
             console.log("right key pressed");
-            grid.mergeTilesRight(currentCondition);
-            changeCondition();
+            let numberOfMerges = grid.mergeTilesRight(currentCondition);
+
+            if (numberOfMerges > 0) {
+                changeCondition();
+            }
         }
     }
 }
@@ -97,18 +106,27 @@ function swipeHandler(e: TouchEvent): void {
             if (Math.abs(xDiff) > Math.abs(yDiff)) { //horizontal swipe
                 if (xDiff > 0) {
                     console.log("swiped right");
-                    grid.mergeTilesRight(currentCondition);
-                    changeCondition();
+                    let numberOfMerges = grid.mergeTilesRight(currentCondition);
+
+                    if (numberOfMerges > 0) {
+                        changeCondition();
+                    }
                 } else {
                     console.log("swiped left");
-                    grid.mergeTilesLeft(currentCondition);
-                    changeCondition();
+                    let numberOfMerges = grid.mergeTilesLeft(currentCondition);
+
+                    if (numberOfMerges > 0) {
+                        changeCondition();
+                    }
                 }
             } else {
                 if (yDiff > 0) {
                     console.log("swiped down");
-                    grid.mergeTilesDown(currentCondition);
-                    changeCondition();
+                    let numberOfMerges = grid.mergeTilesDown(currentCondition);
+
+                    if (numberOfMerges > 0) {
+                        changeCondition();
+                    }
                 }
             }
         }
