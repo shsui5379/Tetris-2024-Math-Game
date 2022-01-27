@@ -1,3 +1,9 @@
+//An interface used to update user's score
+interface MergedData{
+    "counter": number;
+    "mergedValues": number[];
+}
+
 class Grid {
     //Number of rows in a Grid object
     #numRow: number;
@@ -13,6 +19,12 @@ class Grid {
 
     //The time for a Tile to move from one row to another in ms
     #dropTime: number;
+
+    //The highest merge streak [optional]
+    // #mergeStreak: number;
+
+    //The bonus (in percentage) applied to a user's score based on merge streak 
+    #bonusScoreRate: number;
 
     #dropInterval: Interval;
 
@@ -30,6 +42,7 @@ class Grid {
         this.#grid = [];
         this.#coolDown = 1000;
         this.#dropTime = 100;
+        this.#bonusScoreRate = 1.0
 
         this.makeGrid(this.#numRow, this.#numCol, element);
     }
@@ -61,13 +74,12 @@ class Grid {
     }
 
     //Receives user inputs in the form of arrow keys to move Tiles
-    mergeTilesRight(condition: MergeCondition): number {
-        console.log("ATTEMPTING TO MERGE RIGHT");
+    mergeTilesRight(condition: MergeCondition): MergedData {
         var grid = this.#grid;
         var rows = this.#numRow - 1;
         var cols = this.#numCol - 1;
         let counter = 0;
-
+        let mergedValues: number[] = [];
         for (let r = 0; r <= rows; r++) {
             for (let c = cols; c >= 0; c--) {
                 let temp = c;
@@ -81,10 +93,9 @@ class Grid {
                     if (grid[r][c].isEmpty() && !grid[r][temp].isDropping()) grid[r][c].swap(grid[r][temp]);
                     if (this.isValidLocation(r, c + 1)) {
                         if (condition.check(grid[r][c], grid[r][c + 1]) && !grid[r][c].isDropping() && !grid[r][c + 1].isDropping()) {
-                            console.log("CONDITION VERIIED");
                             grid[r][c + 1].merge(grid[r][c]);
                             counter++;
-
+                            mergedValues.push(grid[r][c + 1].getNumber() || 0);
                             //Merging will leave a gap, so check this column again for more merges
                             c++;
                         }
@@ -94,17 +105,22 @@ class Grid {
         }
         this.dropColumn();
         this.display();
+        let mergedData: MergedData = {
+            "counter": 0,
+            "mergedValues": []
+        };
+        mergedData['counter'] = counter;
+        mergedData['mergedValues'] = mergedValues;
 
-        return counter;
+        return mergedData;
     }
 
-    mergeTilesDown(condition: MergeCondition): number {
-        console.log("ATTEMPTING TO MERGE DOWN");
+    mergeTilesDown(condition: MergeCondition): MergedData {
         var grid = this.#grid;
         var rows = this.#numRow - 1;
         var cols = this.#numCol - 1;
         let counter = 0;
-
+        let mergedValues: number[] = [];
         for (let c = 0; c <= cols; c++) {
             for (let r = rows; r >= 0; r--) {
                 let temp = r;
@@ -122,7 +138,7 @@ class Grid {
                         if (condition.check(grid[r][c], grid[r + 1][c]) && !grid[r][c].isDropping() && !grid[r + 1][c].isDropping()) {
                             grid[r + 1][c].merge(grid[r][c]);
                             counter++;
-
+                            mergedValues.push(grid[r + 1][c].getNumber() || 0);
                             //Merging will leave a gap, so check this column again for more merges
                             r++;
                         }
@@ -133,16 +149,22 @@ class Grid {
         this.dropColumn();
         this.display();
 
-        return counter;
+        let mergedData: MergedData = {
+            "counter": 0,
+            "mergedValues": []
+        };
+        mergedData['counter'] = counter;
+        mergedData['mergedValues'] = mergedValues;
+
+        return mergedData;
     }
 
-    mergeTilesLeft(condition: MergeCondition): number {
-        console.log("ATTEMPTING TO MERGE LEFT");
+    mergeTilesLeft(condition: MergeCondition): MergedData {
         var grid = this.#grid;
         var rows = this.#numRow - 1;
         var cols = this.#numCol - 1;
         let counter = 0;
-
+        let mergedValues: number[] = [];
         for (let r = 0; r <= rows; r++) {
             for (let c = 0; c <= cols; c++) {
                 let temp = c;
@@ -158,7 +180,8 @@ class Grid {
                         if (condition.check(grid[r][c], grid[r][c - 1]) && !grid[r][c].isDropping() && !grid[r][c - 1].isDropping()) {
                             grid[r][c - 1].merge(grid[r][c]);
                             counter++;
-
+                            mergedValues.push(grid[r][c-1].getNumber() || 0);
+                            
                             //Merging will leave a gap, so check this column again for more merges
                             c--;
                         }
@@ -169,12 +192,18 @@ class Grid {
         this.dropColumn();
         this.display();
 
-        return counter;
+        let mergedData: MergedData = {
+            "counter": 0,
+            "mergedValues": []
+        };
+        mergedData['counter'] = counter;
+        mergedData['mergedValues'] = mergedValues;
+
+        return mergedData;
     }
 
     //Gravity effect when Tiles are merged
     dropColumn() {
-        console.log("dropping column");
         var r = this.#numRow - 1;
         var c = this.#numCol - 1;
         for (let col = 0; col <= c; col++) {
@@ -196,10 +225,8 @@ class Grid {
         if (!validLocation) return false;
         var empty = grid[tileRow + 1][tileCol].isEmpty();
 
-        console.log("moving tile down");
         if (!empty) return false;       //Checks if Tile[row+1][col] is out of bounds or empty
         else {
-            console.log('preparing to swap tiles');
             grid[tileRow + 1][tileCol].swap(grid[tileRow][tileCol]);  //Swaps the current [row][col] with [row+1][col]
             return true;
         }
@@ -211,13 +238,12 @@ class Grid {
 
         if ((!grid[0][randomColumn].isEmpty())) return false;   //If the first row of the chosen column is not empty, the player loses
         else {
-            let randomNumber = Math.floor((Math.random() * 3) + 1); //Generates number in interval [1,3]
+            let randomNumber = Math.floor((Math.random() * 5) + 1); //Generates number in interval [1,5]
             let randomColor = Tile.getAvailableColors()[Math.floor((Math.random() * Tile.getAvailableColors().length))]; //Generates a number in interval [0,Tile.availableColors().length-1]
             let randomShape = Tile.getAvailableShapes()[Math.floor((Math.random() * Tile.getAvailableShapes().length))];
 
-            console.log(randomColumn, randomColor, randomNumber);
             //Update the first Tile object in row 1 to the randomly generated Tile properties
-            grid[0][randomColumn].setColor(randomColor as Color);
+            grid[0][randomColumn].setColor(randomColor);
             grid[0][randomColumn].setNumber(randomNumber);
             grid[0][randomColumn].setShape(randomShape);
             grid[0][randomColumn].setDropping(true);
@@ -291,6 +317,14 @@ class Grid {
         this.#dropTime = dt;
     }
 
+    // setMergeStreak(ms: number): void{
+    //     this.#mergeStreak = ms;
+    // }
+
+    setBonusScoreRate(bsr: number): void{
+        this.#bonusScoreRate = bsr;
+    }
+
     //Getter Method(s)
     getCoolDown(): number {
         return this.#coolDown;
@@ -298,6 +332,14 @@ class Grid {
 
     getDropTime(): number {
         return this.#dropTime;
+    }
+
+    // getMergeStreak(): number{
+    //     return this.#mergeStreak;
+    // }
+
+    getBonusScoreRate(): number{
+        return this.#bonusScoreRate;
     }
 }
 /*
