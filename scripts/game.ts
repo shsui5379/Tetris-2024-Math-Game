@@ -64,15 +64,55 @@ function reset(): void {
 function keyHandler(e: KeyboardEvent): void {
     if (ongoing && !paused) {
         if (e.key == "ArrowDown") {
-            console.log("down key pressed");
-            grid.mergeTilesDown(currentCondition);
+            let mergeData = grid.mergeTilesDown(currentCondition);
+
+            if (mergeData.counter > 0) {
+                changeCondition();
+                updateScore(mergeData);
+                displayScore(score, parseInt(<string>localStorage.getItem('highscore')));
+            }
+            else{
+                grid.setBonusScoreRate(1.0);
+            }
         } else if (e.key == "ArrowLeft") {
-            console.log("left key pressed");
-            grid.mergeTilesLeft(currentCondition);
+            let mergeData = grid.mergeTilesLeft(currentCondition);
+
+            if (mergeData.counter > 0) {
+                changeCondition();
+                updateScore(mergeData);
+                displayScore(score, parseInt(<string>localStorage.getItem('highscore')));
+            }
+            else{
+                grid.setBonusScoreRate(1.0);
+            }
         } else if (e.key == "ArrowRight") {
-            console.log("right key pressed");
-            grid.mergeTilesRight(currentCondition);
+            let mergeData = grid.mergeTilesRight(currentCondition);
+
+            if (mergeData.counter > 0) {
+                changeCondition();
+                updateScore(mergeData);
+                displayScore(score, parseInt(<string>localStorage.getItem('highscore')));
+            }
+            else{
+                grid.setBonusScoreRate(1.0);
+            }
         }
+    }
+}
+
+/**
+ * 
+ * @param {MergedData} Updates score using data obtained from merged Tiles
+ */
+function updateScore(mergedData: MergedData): void{
+    let numberOfMerges = mergedData.counter;
+    let mergedValues = mergedData.mergedValues;
+
+    for (let i=1; i<=numberOfMerges; i++){
+        let newBonusRate = Math.floor(grid.getBonusScoreRate() + 0.10);
+        grid.setBonusScoreRate(newBonusRate);
+
+        score += grid.getBonusScoreRate() * (mergedValues.shift() || 1);
     }
 }
 
@@ -93,16 +133,40 @@ function swipeHandler(e: TouchEvent): void {
 
             if (Math.abs(xDiff) > Math.abs(yDiff)) { //horizontal swipe
                 if (xDiff > 0) {
-                    console.log("swiped right");
-                    grid.mergeTilesRight(currentCondition);
+                    let mergeData = grid.mergeTilesRight(currentCondition);
+
+                    if (mergeData.counter > 0) {
+                        changeCondition();
+                        updateScore(mergeData);
+                        displayScore(score, parseInt(<string>localStorage.getItem('highscore')));
+                    }
+                    else{
+                        grid.setBonusScoreRate(1.0);
+                    }
                 } else {
-                    console.log("swiped left");
-                    grid.mergeTilesLeft(currentCondition);
+                    let mergeData = grid.mergeTilesLeft(currentCondition);
+
+                    if (mergeData.counter > 0) {
+                        changeCondition();
+                        updateScore(mergeData);
+                        displayScore(score, parseInt(<string>localStorage.getItem('highscore')));
+                    }
+                    else{
+                        grid.setBonusScoreRate(1.0);
+                    }
                 }
             } else {
                 if (yDiff > 0) {
-                    console.log("swiped down");
-                    grid.mergeTilesDown(currentCondition);
+                    let mergeData = grid.mergeTilesDown(currentCondition);
+
+                    if (mergeData.counter > 0) {
+                        changeCondition();
+                        updateScore(mergeData);
+                        displayScore(score, parseInt(<string>localStorage.getItem('highscore')));
+                    }
+                    else{
+                        grid.setBonusScoreRate(1.0);
+                    }
                 }
             }
         }
@@ -146,7 +210,6 @@ function configureDropInterval(): void {
 function dropInterval(delay: number | boolean): void {
     currentTimeout = new Timeout(() => {
         delay = grid.dropRandomNumber();
-        changeCondition();
         if (delay === false) {
             gameOver();
         }
@@ -163,6 +226,7 @@ function gameOver(): void {
         localStorage.setItem("highscore", score.toString());
     }
     displayScore(score, parseInt(<string>localStorage.getItem("highscore")));
+    grid.setBonusScoreRate(1.0);
 }
 
 /**
