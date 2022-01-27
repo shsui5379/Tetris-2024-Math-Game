@@ -55,26 +55,51 @@ function reset() {
 function keyHandler(e) {
     if (ongoing && !paused) {
         if (e.key == "ArrowDown") {
-            console.log("down key pressed");
-            let numberOfMerges = grid.mergeTilesDown(currentCondition);
-            if (numberOfMerges > 0) {
+            let mergeData = grid.mergeTilesDown(currentCondition);
+            if (mergeData.counter > 0) {
                 changeCondition();
+                updateScore(mergeData);
+                displayScore(score, parseInt(localStorage.getItem('highscore')));
+            }
+            else {
+                grid.setBonusScoreRate(1.0);
             }
         }
         else if (e.key == "ArrowLeft") {
-            console.log("left key pressed");
-            let numberOfMerges = grid.mergeTilesLeft(currentCondition);
-            if (numberOfMerges > 0) {
+            let mergeData = grid.mergeTilesLeft(currentCondition);
+            if (mergeData.counter > 0) {
                 changeCondition();
+                updateScore(mergeData);
+                displayScore(score, parseInt(localStorage.getItem('highscore')));
+            }
+            else {
+                grid.setBonusScoreRate(1.0);
             }
         }
         else if (e.key == "ArrowRight") {
-            console.log("right key pressed");
-            let numberOfMerges = grid.mergeTilesRight(currentCondition);
-            if (numberOfMerges > 0) {
+            let mergeData = grid.mergeTilesRight(currentCondition);
+            if (mergeData.counter > 0) {
                 changeCondition();
+                updateScore(mergeData);
+                displayScore(score, parseInt(localStorage.getItem('highscore')));
+            }
+            else {
+                grid.setBonusScoreRate(1.0);
             }
         }
+    }
+}
+/**
+ *
+ * @param {MergedData} Updates score using data obtained from merged Tiles
+ */
+function updateScore(mergedData) {
+    let numberOfMerges = mergedData.counter;
+    let mergedValues = mergedData.mergedValues;
+    for (let i = 1; i <= numberOfMerges; i++) {
+        let newBonusRate = Math.floor(grid.getBonusScoreRate() + 0.10);
+        grid.setBonusScoreRate(newBonusRate);
+        score += grid.getBonusScoreRate() * (mergedValues.shift() || 1);
     }
 }
 /**
@@ -94,26 +119,38 @@ function swipeHandler(e) {
             let yDiff = e.changedTouches[0].clientY - touchY;
             if (Math.abs(xDiff) > Math.abs(yDiff)) { //horizontal swipe
                 if (xDiff > 0) {
-                    console.log("swiped right");
-                    let numberOfMerges = grid.mergeTilesRight(currentCondition);
-                    if (numberOfMerges > 0) {
+                    let mergeData = grid.mergeTilesRight(currentCondition);
+                    if (mergeData.counter > 0) {
                         changeCondition();
+                        updateScore(mergeData);
+                        displayScore(score, parseInt(localStorage.getItem('highscore')));
+                    }
+                    else {
+                        grid.setBonusScoreRate(1.0);
                     }
                 }
                 else {
-                    console.log("swiped left");
-                    let numberOfMerges = grid.mergeTilesLeft(currentCondition);
-                    if (numberOfMerges > 0) {
+                    let mergeData = grid.mergeTilesLeft(currentCondition);
+                    if (mergeData.counter > 0) {
                         changeCondition();
+                        updateScore(mergeData);
+                        displayScore(score, parseInt(localStorage.getItem('highscore')));
+                    }
+                    else {
+                        grid.setBonusScoreRate(1.0);
                     }
                 }
             }
             else {
                 if (yDiff > 0) {
-                    console.log("swiped down");
-                    let numberOfMerges = grid.mergeTilesDown(currentCondition);
-                    if (numberOfMerges > 0) {
+                    let mergeData = grid.mergeTilesDown(currentCondition);
+                    if (mergeData.counter > 0) {
                         changeCondition();
+                        updateScore(mergeData);
+                        displayScore(score, parseInt(localStorage.getItem('highscore')));
+                    }
+                    else {
+                        grid.setBonusScoreRate(1.0);
                     }
                 }
             }
@@ -168,6 +205,7 @@ function gameOver() {
         localStorage.setItem("highscore", score.toString());
     }
     displayScore(score, parseInt(localStorage.getItem("highscore")));
+    grid.setBonusScoreRate(1.0);
 }
 /**
  * Opens instructions.html in a new tab
