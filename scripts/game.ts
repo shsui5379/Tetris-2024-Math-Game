@@ -109,7 +109,7 @@ function updateScore(mergedData: MergedData): void{
     let mergedValues = mergedData.mergedValues;
 
     for (let i=1; i<=numberOfMerges; i++){
-        let newBonusRate = Math.floor(grid.getBonusScoreRate() * 1.10);
+        let newBonusRate = Math.floor(grid.getBonusScoreRate() + 0.10);
         grid.setBonusScoreRate(newBonusRate);
 
         score += grid.getBonusScoreRate() * (mergedValues.shift() || 1);
